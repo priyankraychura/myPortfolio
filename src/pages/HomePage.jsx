@@ -6,6 +6,8 @@ import Work from '../components/Work'
 import Review from '../components/Review'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
+import Education from '../components/Education'
+import HonorsAndAwards from '../components/HonorsAndAwards'
 
 const HomePage = () => {
     return (
@@ -14,6 +16,8 @@ const HomePage = () => {
             <About />
             <Skill />
             <Work />
+            <Education />
+            <HonorsAndAwards />
             <Review />
             <Contact />
             <Footer />

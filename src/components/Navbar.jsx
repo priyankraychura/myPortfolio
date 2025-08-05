@@ -52,6 +52,16 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
             className: 'nav-link'
         },
         {
+            label: 'Education',
+            link: './#education',
+            className: 'nav-link'
+        },
+        {
+            label: 'Awards',
+            link: './#awards',
+            className: 'nav-link'
+        },
+        {
             label: 'Reviews',
             link: './#reviews',
             className: 'nav-link'
@@ -80,7 +90,7 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
                 })
             }
 
-            <div className="mt-auto pt-4 mt-4 border-t border-zinc-700 w-full md:hidden">
+            <div className="mt-auto pt-4 border-t border-zinc-700 w-full md:hidden">
                 {userData && userData.profileImg ? (
                     <div>
                         <div className="flex items-center gap-3 mb-4 p-2">

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { auth, db, provider } from '../config/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { signInWithPopup } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 // SVG Icon for Google
 const GoogleIcon = () => (
@@ -60,7 +61,7 @@ const LoginRegisterPopup = ({ isOpen, onClose }) => {
         const user = res.user.providerData[0]
         console.log(user)
         setDoc(doc(db, 'users', res.user.uid), { email: user.email, name: user.displayName, profileImg: user.photoURL })
-        // toast.success(`Rregistration successful!`)
+        toast.success(`Loggedin successfully!`)
       })
     onClose();
   };

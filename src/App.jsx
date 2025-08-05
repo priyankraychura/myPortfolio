@@ -12,6 +12,7 @@ import LoginRegisterPopup from './components/LoginRegisterPopup'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { auth, db } from './config/firebaseConfig'
+import toast from 'react-hot-toast';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger); // register the hook to avoid React version discrepancies 
 
@@ -55,8 +56,7 @@ export default function App() {
   const handleLogout = async () => {
     await auth.signOut();
     setUserData(null)
-    // toast.success('Logged out successfully!')
-    // navigate('/signIn');
+    toast.success('Logged out successfully!')
   }
 
   useGSAP(() => {
