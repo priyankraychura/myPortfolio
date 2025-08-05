@@ -3,9 +3,9 @@ import SkillCard from './SkillCard';
 
 const skillItem = [
   {
-    imgSrc: '/images/figma.svg',
-    label: 'Figma',
-    desc: 'Design tool'
+    imgSrc: '/images/html5.svg',
+    label: 'HTML',
+    desc: 'Web Structure'
   },
   {
     imgSrc: '/images/css3.svg',
@@ -16,6 +16,16 @@ const skillItem = [
     imgSrc: '/images/javascript.svg',
     label: 'JavaScript',
     desc: 'Interaction'
+  },
+  {
+    imgSrc: '/images/bootstrap.svg',
+    label: 'Bootstrap',
+    desc: 'CSS Framework'
+  },
+  {
+    imgSrc: '/images/react.svg',
+    label: 'React',
+    desc: 'Framework'
   },
   {
     imgSrc: '/images/nodejs.svg',
@@ -30,17 +40,47 @@ const skillItem = [
   {
     imgSrc: '/images/mongodb.svg',
     label: 'MongoDB',
-    desc: 'Database'
+    desc: 'Document Database'
   },
   {
-    imgSrc: '/images/react.svg',
-    label: 'React',
-    desc: 'Framework'
+    imgSrc: '/images/php.svg',
+    label: 'PHP',
+    desc: 'Server-side scripting'
+  },
+  {
+    imgSrc: '/images/mysql.svg',
+    label: 'MySQL',
+    desc: 'Relational Database'
+  },
+  {
+    imgSrc: '/images/python.svg',
+    label: 'python',
+    desc: 'Programming Language'
+  },
+  {
+    imgSrc: '/images/django.svg',
+    label: 'Django',
+    desc: 'Python Framework'
+  },
+  {
+    imgSrc: '/images/java.svg',
+    label: 'Java',
+    desc: 'Programming Language'
   },
   {
     imgSrc: '/images/tailwindcss.svg',
     label: 'TailwindCSS',
     desc: 'User Interface'
+  },
+  {
+    imgSrc: '/images/github.svg',
+    label: 'GitHub',
+    desc: 'Version Control'
+  },
+  {
+    imgSrc: '/images/figma.svg',
+    label: 'Figma',
+    desc: 'Design tool'
   },
 ];
 

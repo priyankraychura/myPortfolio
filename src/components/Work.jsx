@@ -1,9 +1,10 @@
 import React from 'react'
 import ProjectCard from './ProjectCard';
+import { Link } from 'react-router-dom';
 
 const works = [
     {
-        imgSrc: '/images/project-1.jpg',
+        imgSrc: '/images/project-1.png',
         title: 'Full stack music app',
         tags: ['API', 'MVC', 'Development'],
         projectLink: 'https://musify-5al0.onrender.com/'
@@ -38,6 +39,18 @@ const works = [
         tags: ['Web-design', 'Development'],
         projectLink: 'https://github.com/codewithsadee/vcard-personal-portfolio'
     },
+    {
+        imgSrc: '/images/project-6.jpg',
+        title: 'vCard Personal portfolio',
+        tags: ['Web-design', 'Development'],
+        projectLink: 'https://github.com/codewithsadee/vcard-personal-portfolio'
+    },
+    {
+        imgSrc: '/images/project-6.jpg',
+        title: 'vCard Personal portfolio',
+        tags: ['Web-design', 'Development'],
+        projectLink: 'https://github.com/codewithsadee/vcard-personal-portfolio'
+    },
 ];
 
 const Work = () => {
@@ -47,13 +60,19 @@ const Work = () => {
             className="section"
         >
             <div className="container">
-                <h2 className="headline-2 mb-8 reveal-up">
-                    My portfolio highlights
-                </h2>
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="headline-2 reveal-up">
+                        My portfolio highlights
+                    </h2>
+
+                    <h3 className="text-sky-400 font-semibold md:text-lg">
+                        <Link to={'/all-projects'}>View all</Link>
+                    </h3>
+                </div>
 
                 <div className="grid gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
                     {
-                        works.map(({ imgSrc, title, tags, projectLink }, key) => (
+                        works?.slice(0, 6)?.map(({ imgSrc, title, tags, projectLink }, key) => (
                             <ProjectCard
                                 key={key}
                                 imgSrc={imgSrc}
