@@ -6,10 +6,12 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
     const activeBox = useRef()
 
     const initActiveBox = () => {
-        activeBox.current.style.top = lastActiveLink.current.offsetTop + 'px'
-        activeBox.current.style.left = lastActiveLink.current.offsetLeft + 'px'
-        activeBox.current.style.width = lastActiveLink.current.offsetWidth + 'px'
-        activeBox.current.style.height = lastActiveLink.current.offsetHeight + 'px'
+        if (lastActiveLink.current && activeBox.current) {
+            activeBox.current.style.top = lastActiveLink.current.offsetTop + 'px'
+            activeBox.current.style.left = lastActiveLink.current.offsetLeft + 'px'
+            activeBox.current.style.width = lastActiveLink.current.offsetWidth + 'px'
+            activeBox.current.style.height = lastActiveLink.current.offsetHeight + 'px'
+        }
     }
 
     const activeCurrentLink = (event) => {
@@ -23,8 +25,14 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
         activeBox.current.style.height = event.target.offsetHeight + 'px'
     }
 
-    useEffect(initActiveBox, [])
-    window.addEventListener('resize', initActiveBox)
+    useEffect(() => {
+        initActiveBox();
+        window.addEventListener('resize', initActiveBox);
+
+        return () => {
+            window.removeEventListener('resize', initActiveBox);
+        };
+    }, [userData, navOpen]);
 
     const navItems = [
         {
@@ -72,7 +80,7 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
                 })
             }
 
-            <div className="mt-auto pt-4 border-t border-zinc-700 w-full md:hidden">
+            <div className="mt-auto pt-4 mt-4 border-t border-zinc-700 w-full md:hidden">
                 {userData && userData.profileImg ? (
                     <div>
                         <div className="flex items-center gap-3 mb-4 p-2">
@@ -122,4 +130,5 @@ Navbar.propTypes = {
     onLoginRegisterClick: PropTypes.func.isRequired,
     userData: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     onLogout: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
 }

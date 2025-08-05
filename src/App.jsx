@@ -19,6 +19,7 @@ export default function App() {
   const [uid, setUid] = useState(null);
   const [userData, setUserData] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -31,19 +32,24 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true);
     if (uid) {
       fetchUser();
+    } else {
+      setUserData(null);
+      setIsLoading(false);
     }
   }, [uid])
 
   const fetchUser = async () => {
-    await getDoc(doc(db, 'users', uid))
-      .then((res) => {
-        setUserData(res.data());
-      })
-      .catch((err) => {
-        console.error(err.message);
-      })
+    try {
+      const res = await getDoc(doc(db, 'users', uid));
+      setUserData(res.data());
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const handleLogout = async () => {
@@ -76,7 +82,7 @@ export default function App() {
     <BrowserRouter>
       <ReactLenis root>
         <ScrollToTop />
-        <Header onLoginRegisterClick={() => setIsPopupOpen(true)} userData={userData} onLogout={handleLogout}/>
+        <Header onLoginRegisterClick={() => setIsPopupOpen(true)} userData={userData} onLogout={handleLogout} isLoading={isLoading}/>
         <Routes />
         <LoginRegisterPopup
           isOpen={isPopupOpen}

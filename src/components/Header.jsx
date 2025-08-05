@@ -1,7 +1,8 @@
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
+import { PuffLoader } from "react-spinners";
 
-export default function Header({ onLoginRegisterClick, userData, onLogout }) {
+export default function Header({ onLoginRegisterClick, userData, onLogout, isLoading }) {
     const [navOpen, setNavOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
@@ -30,9 +31,18 @@ export default function Header({ onLoginRegisterClick, userData, onLogout }) {
                     <Navbar navOpen={navOpen} onLoginRegisterClick={onLoginRegisterClick} userData={userData} onLogout={onLogout} />
                 </div>
 
-                {/* --- User Display Area --- */}
                 <div className="relative md:justify-self-end max-md:hidden">
-                    {userData && userData.profileImg ? (
+                    {isLoading ? (
+                        <div className="w-9 h-9 flex items-center justify-center">
+                            <PuffLoader
+                                color="white"
+                                loading={true}
+                                size={36}
+                                aria-label="Loading Spinner"
+                                data-testid="loader"
+                            />
+                        </div>
+                    ) : userData && userData.profileImg ? (
                         <div>
                             <button
                                 onClick={() => setIsProfileMenuOpen(prev => !prev)}
@@ -67,7 +77,6 @@ export default function Header({ onLoginRegisterClick, userData, onLogout }) {
                             )}
                         </div>
                     ) : (
-                        // If user is not logged in, show Register button
                         <button
                             onClick={onLoginRegisterClick}
                             className='btn btn-secondary max-md:hidden'
