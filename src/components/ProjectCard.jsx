@@ -6,17 +6,25 @@ const ProjectCard = ({
     title,
     tags,
     projectLink,
+    githubLink,
     classes
 }) => {
     return (
-        <div className={"relative p-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700/50 active:bg-zinc-700/60 ring-1 ring-inset ring-zinc-50/5 transition-colors " + classes}>
-            <figure className="img-box aspect-square rounded-lg mb-4">
+        <div className={"p-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700/50 active:bg-zinc-700/60 ring-1 ring-inset ring-zinc-50/5 transition-colors " + classes}>
+            <figure className="relative img-box aspect-video rounded-lg mb-4">
                 <img
                     src={imgSrc}
                     alt={title}
                     loading='lazy'
                     className="img-cover"
                 />
+                <a
+                    href={projectLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="absolute inset-0"
+                >
+                </a>
             </figure>
 
             <div className="flex items-center justify-between gap-4">
@@ -40,30 +48,32 @@ const ProjectCard = ({
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <div className="w-8 h-8 rounded-lg grid place-items-center bg-sky-400 text-zinc-950 shrink-0">
-                    <span
-                        className="material-symbols-rounded"
-                        aria-hidden="true"
-                    >
-                        arrow_outward
-                    </span>
-                </div>
-                    <img 
-                    src="./images/github4.svg" 
-                    width={36} 
-                    height={36}
-                    className='opacity-60'
-                    alt="github" />
+                    <div className="relative w-8 h-8 rounded-lg grid place-items-center bg-sky-400 text-zinc-950 shrink-0">
+                        <span
+                            className="material-symbols-rounded"
+                            aria-hidden="true"
+                        >
+                            arrow_outward
+                        </span>
+                        <a
+                            href={projectLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="absolute inset-0"
+                        >
+                        </a>
+                    </div>
+                    <img
+                        src="./images/github4.svg"
+                        width={36}
+                        height={36}
+                        className='opacity-60 cursor-pointer'
+                        alt="github"
+                        onClick={() => window.open(githubLink, '_blank')}
+                    />
                 </div>
 
-                <a
-                    href={projectLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute inset-0"
-                >
 
-                </a>
             </div>
         </div>
     )
@@ -74,6 +84,7 @@ ProjectCard.protoTypes = {
     title: PropTypes.string.isRequired,
     tags: PropTypes.array.isRequired,
     projectLink: PropTypes.string,
+    githubLink: PropTypes.string,
     classes: PropTypes.string
 }
 
