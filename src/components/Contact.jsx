@@ -47,7 +47,16 @@ const Contact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('https://api.priyank.space/api/v1/client/contact', formData)
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const apiKey = import.meta.env.VITE_API_SECRET_KEY;
+
+        const config = {
+            headers: {
+                'X-API-Key': apiKey
+            }
+        };
+
+        axios.post(`${apiUrl}/contact`, formData)
             .then(res => {
                 console.log(res.data);
             })
