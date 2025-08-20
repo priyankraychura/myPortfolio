@@ -48,7 +48,11 @@ const Contact = () => {
         e.preventDefault();
 
         const apiUrl = import.meta.env.VITE_API_URL;
+        console.log("🚀 ~ handleSubmit ~ apiUrl:", apiUrl)
         const apiKey = import.meta.env.VITE_API_SECRET_KEY;
+        console.log("🚀 ~ handleSubmit ~ apiKey:", apiKey)
+
+        
 
         const config = {
             headers: {
@@ -56,7 +60,7 @@ const Contact = () => {
             }
         };
 
-        axios.post(`${apiUrl}/contact`, formData)
+        axios.post(`https://api.priyank.space/api/v1/client/contact`, formData)
             .then(res => {
                 console.log(res.data);
             })
