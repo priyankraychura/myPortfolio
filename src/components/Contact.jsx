@@ -1,4 +1,5 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 
 const socialLinks = [
     {
@@ -32,6 +33,38 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        axios.post('https://api.priyank.space/api/v1/client/contact', formData)
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => {
+                setFormData({
+                    name: '',
+                    email: '',
+                    message: ''
+                });
+            });
+
+        console.log(formData);
+    };
+
     return (
         <section
             id='contact'
@@ -66,9 +99,9 @@ const Contact = () => {
                 </div>
 
                 <form
-                    action="https://getform.io/f/bdrgolvb"
                     method='POST'
                     className='xl:pl-10 2xl:pl-20'
+                    onSubmit={handleSubmit}
                 >
                     <div className="md:grid md:items-center md:grid-cols-2 md:gap-2">
                         <div className="mb-4">
@@ -87,6 +120,8 @@ const Contact = () => {
                                 required
                                 placeholder='Your Name'
                                 className="text-field reveal-up"
+                                onChange={handleChange}
+                                value={formData.name}
                             />
                         </div>
 
@@ -106,6 +141,8 @@ const Contact = () => {
                                 required
                                 placeholder='yourname@example.com'
                                 className="text-field reveal-up"
+                                onChange={handleChange}
+                                value={formData.email}
                             />
                         </div>
                     </div>
@@ -124,6 +161,8 @@ const Contact = () => {
                             placeholder='Hello! How can I help you?'
                             required
                             className="text-field resize-y min-h-32 max-h-80 reveal-up"
+                            onChange={handleChange}
+                            value={formData.message}
                         >
 
                         </textarea>
