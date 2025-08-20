@@ -60,7 +60,7 @@ const Contact = () => {
             }
         };
 
-        axios.post(`https://api.priyank.space/api/v1/client/contact`, formData)
+        axios.post(`${apiUrl}/contact`, formData, config)
             .then(res => {
                 console.log(res.data);
             })
