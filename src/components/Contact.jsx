@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import Lottie from 'lottie-react';
+import successAnimation from '../assets/success-animation.json'
 
 const socialLinks = [
     {
@@ -32,12 +34,34 @@ const socialLinks = [
     },
 ];
 
+
+    const SuccessView = ({ onReset }) => (
+        <div className="flex flex-col items-center justify-center text-center xl:pl-10 2xl:pl-20">
+            <Lottie
+                animationData={successAnimation}
+                loop={false}
+                style={{ width: 150, height: 125 }}
+            />
+            <h3 className="headline-3 mt-6">Message Sent!</h3>
+            <p className="text-zinc-400 mt-2 max-w-[40ch]">
+                Thank you for reaching out. I'll get back to you as soon as possible.
+            </p>
+            <button
+                onClick={onReset} // Reset button
+                className="btn btn-primary mt-8"
+            >
+                Send Another Message
+            </button>
+        </div>
+    );
+
 const Contact = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
+    const [status, setStatus] = useState('idle');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,13 +70,10 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setStatus('submitting');
 
         const apiUrl = import.meta.env.VITE_API_URL;
-        console.log("🚀 ~ handleSubmit ~ apiUrl:", apiUrl)
         const apiKey = import.meta.env.VITE_API_SECRET_KEY;
-        console.log("🚀 ~ handleSubmit ~ apiKey:", apiKey)
-
-        
 
         const config = {
             headers: {
@@ -63,9 +84,11 @@ const Contact = () => {
         axios.post(`${apiUrl}/contact`, formData, config)
             .then(res => {
                 console.log(res.data);
+                setStatus('success');
             })
             .catch(err => {
                 console.log(err);
+                setStatus('error');
             })
             .finally(() => {
                 setFormData({
@@ -77,7 +100,7 @@ const Contact = () => {
 
         console.log(formData);
     };
-
+    
     return (
         <section
             id='contact'
@@ -111,83 +134,59 @@ const Contact = () => {
 
                 </div>
 
-                <form
-                    method='POST'
-                    className='xl:pl-10 2xl:pl-20'
-                    onSubmit={handleSubmit}
-                >
-                    <div className="md:grid md:items-center md:grid-cols-2 md:gap-2">
-                        <div className="mb-4">
-                            <label
-                                htmlFor="name"
-                                className='label reveal-up'
-                            >
-                                Name
-                            </label>
-
-                            <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                autoComplete='name'
-                                required
-                                placeholder='Your Name'
-                                className="text-field reveal-up"
-                                onChange={handleChange}
-                                value={formData.name}
-                            />
-                        </div>
-
-                        <div className="mb-4">
-                            <label
-                                htmlFor="email"
-                                className='label reveal-up'
-                            >
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                autoComplete='email'
-                                required
-                                placeholder='yourname@example.com'
-                                className="text-field reveal-up"
-                                onChange={handleChange}
-                                value={formData.email}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <label
-                            htmlFor="message"
-                            className="label reveal-up"
-                        >
-                            Message
-                        </label>
-
-                        <textarea
-                            name="message"
-                            id="message"
-                            placeholder='Hello! How can I help you?'
-                            required
-                            className="text-field resize-y min-h-32 max-h-80 reveal-up"
-                            onChange={handleChange}
-                            value={formData.message}
-                        >
-
-                        </textarea>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className='btn btn-primary [&]:max-w-full w-full justify-center reveal-up'
+                {status === 'success' ? <SuccessView onReset={() => setStatus('idle')}/> : (
+                    <form
+                        method='POST'
+                        className='xl:pl-10 2xl:pl-20'
+                        onSubmit={handleSubmit}
                     >
-                        Submit
-                    </button>
-                </form>
+                        {/* Optional: Show an error message */}
+                        {status === 'error' && (
+                            <div className="bg-red-900/20 text-red-400 p-3 rounded-lg mb-4 text-center">
+                                Something went wrong. Please try again later.
+                            </div>
+                        )}
+
+                        <div className="md:grid md:items-center md:grid-cols-2 md:gap-2">
+                            <div className="mb-4">
+                                <label htmlFor="name" className='label'>Name</label>
+                                <input
+                                    type="text" name="name" id="name" autoComplete='name' required
+                                    placeholder='Your Name' className="text-field"
+                                    onChange={handleChange} value={formData.name}
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="email" className='label'>Email</label>
+                                <input
+                                    type="email" name="email" id="email" autoComplete='email' required
+                                    placeholder='yourname@example.com' className="text-field"
+                                    onChange={handleChange} value={formData.email}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="message" className="label">Message</label>
+                            <textarea
+                                name="message" id="message" placeholder='Hello! How can I help you?' required
+                                className="text-field resize-y min-h-32 max-h-80"
+                                onChange={handleChange} value={formData.message}
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            // Disable button while submitting to prevent multiple clicks
+                            disabled={status === 'submitting'}
+                            className='btn btn-primary [&]:max-w-full w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed'
+                        >
+                            {status === 'submitting' ? 'Submitting...' : 'Submit'}
+                        </button>
+                    </form>
+                )}
+
+
             </div>
         </section>
     )
