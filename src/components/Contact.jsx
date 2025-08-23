@@ -140,9 +140,8 @@ const Contact = () => {
                         className='xl:pl-10 2xl:pl-20'
                         onSubmit={handleSubmit}
                     >
-                        {/* Optional: Show an error message */}
                         {status === 'error' && (
-                            <div className="bg-red-900/20 text-red-400 p-3 rounded-lg mb-4 text-center">
+                            <div className="bg-red-900/20 text-red-400 p-2.5 rounded-lg mb-4 text-center">
                                 Something went wrong. Please try again later.
                             </div>
                         )}
@@ -154,6 +153,7 @@ const Contact = () => {
                                     type="text" name="name" id="name" autoComplete='name' required
                                     placeholder='Your Name' className="text-field"
                                     onChange={handleChange} value={formData.name}
+                                    disabled={status === 'submitting'}
                                 />
                             </div>
                             <div className="mb-4">
@@ -162,6 +162,7 @@ const Contact = () => {
                                     type="email" name="email" id="email" autoComplete='email' required
                                     placeholder='yourname@example.com' className="text-field"
                                     onChange={handleChange} value={formData.email}
+                                    disabled={status === 'submitting'}
                                 />
                             </div>
                         </div>
@@ -172,6 +173,7 @@ const Contact = () => {
                                 name="message" id="message" placeholder='Hello! How can I help you?' required
                                 className="text-field resize-y min-h-32 max-h-80"
                                 onChange={handleChange} value={formData.message}
+                                disabled={status === 'submitting'}
                             ></textarea>
                         </div>
 
