@@ -273,3 +273,90 @@ export const works = [
         githubLink: 'https://github.com/priyankraychura/YouTubeThumbnail-JS-Project'
     },
 ];
+
+export const apps = [
+    {
+        imgSrc: '/appIcons/pushtimarg.png',
+        title: 'Pushtimarg',
+        tags: ['React Native', 'CSS'],
+        playStoreLink: 'https://weather-app-js-project-virid.vercel.app/',
+        plolicyLink: '/privacy-policy/pushtimarg'
+    },
+    // {
+    //     imgSrc: '/projects/project-32.png',
+    //     title: 'Movie guide app',
+    //     tags: ['JavaScript', 'API'],
+    //     projectLink: 'https://movie-guide-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/MovieGuide-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-28.png',
+    //     title: 'Currency Converter',
+    //     tags: ['JavaScript', 'API'],
+    //     projectLink: 'https://currency-converter-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/currencyConverter-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-29.png',
+    //     title: 'Gradient Generator',
+    //     tags: ['JavaScript', 'Tool'],
+    //     projectLink: 'https://gradient-generator-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/gradientGenerator-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-30.png',
+    //     title: 'Image Previewer',
+    //     tags: ['JavaScript', 'Tool'],
+    //     projectLink: 'https://image-previewer-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/ImagePreviewer-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-31.png',
+    //     title: 'Is Online Checker',
+    //     tags: ['JavaScript', 'Utility'],
+    //     projectLink: 'https://is-online-checker-java-script-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/isOnlineChecker-JavaScriptProject'
+    // },
+    // {
+    //     imgSrc: '/projects/project-33.png',
+    //     title: 'Palidrome Checker',
+    //     tags: ['JavaScript', 'Algorithm'],
+    //     projectLink: 'https://palidrome-checker-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/PalidromeChecker-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-34.png',
+    //     title: 'Password Validator',
+    //     tags: ['JavaScript', 'Security'],
+    //     projectLink: 'https://password-validator-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/PasswordValidator-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-35.png',
+    //     title: 'QR Code Generator',
+    //     tags: ['JavaScript', 'Tool'],
+    //     projectLink: 'https://qr-code-generator-js-project-smoky.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/QRCodeGenerator-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-36.png',
+    //     title: 'Random Quote',
+    //     tags: ['JavaScript', 'API'],
+    //     projectLink: 'https://random-quote-generator-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/RandomQuoteGenerator-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-37.png',
+    //     title: 'Stopwatch',
+    //     tags: ['JavaScript', 'Utility'],
+    //     projectLink: 'https://stopwatch-js-project-beta.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/Stopwatch-JS-Project'
+    // },
+    // {
+    //     imgSrc: '/projects/project-39.png',
+    //     title: 'Youtube Thumbnail',
+    //     tags: ['JavaScript', 'Tool'],
+    //     projectLink: 'https://youtube-thumbnail-js-project.vercel.app/',
+    //     githubLink: 'https://github.com/priyankraychura/YouTubeThumbnail-JS-Project'
+    // },
+];

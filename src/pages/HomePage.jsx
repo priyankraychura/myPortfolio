@@ -8,6 +8,7 @@ import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import Education from '../components/Education'
 import HonorsAndAwards from '../components/HonorsAndAwards'
+import Apps from '../components/Apps'
 
 const HomePage = () => {
     return (
@@ -16,6 +17,7 @@ const HomePage = () => {
             <About />
             <Skill />
             <Work />
+            <Apps />
             <Education />
             <HonorsAndAwards />
             <Review />
