@@ -11,7 +11,7 @@ const PrivacyPolicyTemplate = ({ data }) => {
       <div className="container max-w-4xl mx-auto px-4 pb-20">
         
         {/* Header */}
-        <header className="mb-12 border-b border-zinc-800 pb-8">
+        <header className="mb-8 border-b border-zinc-800 pb-8">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-50 mb-4">
             Privacy Policy for <span className="text-sky-400">{appName}</span>
           </h1>
