@@ -41,7 +41,7 @@ export const pushtimarg = {
       "description": "To provide you with the most up-to-date content, we use the following third-party service:",
       "points": [
          // 4. FIX: Added Netlify specifically
-        "**Netlify:** We use Netlify to host and deliver the JSON content files for the app. When your app fetches this data, Netlify may process standard request information (such as your IP address) in accordance with their privacy policy."
+        "Netlify: We use Netlify to host and deliver the JSON content files for the app. When your app fetches this data, Netlify may process standard request information (such as your IP address) in accordance with their privacy policy."
       ],
       "closingDescription": "Additionally, the application is distributed via app stores (Google Play Store, Apple App Store) which may collect anonymous usage data governed by their own policies."
     },
