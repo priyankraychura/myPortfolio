@@ -279,7 +279,7 @@ export const apps = [
         imgSrc: '/appIcons/pushtimarg.png',
         title: 'Pushtimarg',
         tags: ['React Native', 'CSS'],
-        playStoreLink: 'https://weather-app-js-project-virid.vercel.app/',
+        playStoreLink: 'https://play.google.com/store/apps/details?id=com.priyank.pushtimarg',
         plolicyLink: '/privacy-policy/pushtimarg'
     },
     // {
