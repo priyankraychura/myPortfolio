@@ -1,12 +1,15 @@
 name: Deploy to Vercel
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  # This workflow is currently disabled from running automatically.
+  # To enable it, uncomment the `push` and `pull_request` lines.
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
+  workflow_dispatch: # Allows you to run this manually from the Actions tab if needed
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
