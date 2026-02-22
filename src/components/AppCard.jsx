@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 
 const AppCard = ({
     imgSrc,
@@ -9,9 +10,11 @@ const AppCard = ({
     plolicyLink,
     classes
 }) => {
+    const navigate = useNavigate();
+
     return (
         <div className={"relative p-3 rounded-xl bg-zinc-800 hover:bg-zinc-700/50 active:bg-zinc-700/60 ring-1 ring-inset ring-zinc-50/5 transition-colors flex items-center gap-3 group " + classes}>
-            
+
             <figure className="w-12 h-12 rounded-lg overflow-hidden shrink-0">
                 <img
                     src={imgSrc}
@@ -49,8 +52,8 @@ const AppCard = ({
             <button
                 className="w-8 h-8 rounded-lg grid place-items-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-50/10 z-20 transition-colors"
                 onClick={(e) => {
-                    e.stopPropagation(); 
-                    window.open(plolicyLink, '_blank');
+                    e.stopPropagation();
+                    navigate(plolicyLink);
                 }}
                 aria-label="View Source Code"
                 title="View Source Code"
