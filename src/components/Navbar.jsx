@@ -15,7 +15,7 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
     }
 
     const activeCurrentLink = (event) => {
-        lastActiveLink.current ?.classList.remove('active');
+        lastActiveLink.current?.classList.remove('active');
         event.target.classList.add('active')
         lastActiveLink.current = event.target;
 
@@ -37,38 +37,38 @@ export default function Navbar({ navOpen, onLoginRegisterClick, userData, onLogo
     const navItems = [
         {
             label: 'Home',
-            link: './#home',
+            link: '/#home',
             className: 'nav-link active',
             ref: lastActiveLink
         },
         {
             label: 'About',
-            link: './#about',
+            link: '/#about',
             className: 'nav-link'
         },
         {
             label: 'Work',
-            link: './#work',
+            link: '/#work',
             className: 'nav-link'
         },
         {
             label: 'Education',
-            link: './#education',
+            link: '/#education',
             className: 'nav-link'
         },
         {
             label: 'Awards',
-            link: './#awards',
+            link: '/#awards',
             className: 'nav-link'
         },
         {
             label: 'Reviews',
-            link: './#reviews',
+            link: '/#reviews',
             className: 'nav-link'
         },
         {
             label: 'Contact',
-            link: './#contact',
+            link: '/#contact',
             className: 'nav-link'
         }
     ];
