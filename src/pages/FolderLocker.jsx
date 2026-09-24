@@ -163,6 +163,43 @@ const FolderLocker = () => {
             driver. The installer can install it for you.
           </p>
         </div>
+
+        {/* Code signing policy */}
+        <h2 id="code-signing" className="headline-2 mt-16 mb-8">Code signing policy</h2>
+        <div className="p-5 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5 text-sm text-zinc-300 space-y-3">
+          <p>
+            Free code signing provided by{' '}
+            <a href="https://about.signpath.io" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">SignPath.io</a>,
+            certificate by{' '}
+            <a href="https://signpath.org" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">SignPath Foundation</a>.
+          </p>
+          <p>
+            Only files built from the public{' '}
+            <a href={REPO_URL} target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">source code</a>{' '}
+            by GitHub Actions are signed.
+          </p>
+          <p>
+            <span className="text-zinc-200">Committers and reviewers:</span>{' '}
+            <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">Priyank Raychura</a>
+            <br />
+            <span className="text-zinc-200">Approvers:</span>{' '}
+            <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">Priyank Raychura</a>
+          </p>
+        </div>
+
+        {/* Privacy policy */}
+        <h2 id="privacy" className="headline-2 mt-16 mb-8">Privacy policy</h2>
+        <div className="p-5 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5 text-sm text-zinc-300 space-y-3">
+          <p>
+            This program will not transfer any information to other networked systems unless
+            specifically requested by the user or the person installing or operating it.
+          </p>
+          <p>
+            Cloak has no account, no cloud and no telemetry. Your passwords, recovery key and files
+            stay on your PC. It never connects to the internet by itself: links, such as the Dokany
+            download page, open in your browser only when you click them.
+          </p>
+        </div>
       </div>
 
       {preview && (
