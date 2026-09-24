@@ -12,6 +12,7 @@ const AllRoutes = () => {
       <Route path='/' element={<HomePage />} />
       <Route path='/all-projects' element={<AllProjects />} />
       <Route path='/privacy-policy/:appName' element={<PrivacyPolicy />} />
+      <Route path='/apps/cloak' element={<FolderLocker />} />
       <Route path='/apps/folder-locker' element={<FolderLocker />} />
     </Routes>
   )

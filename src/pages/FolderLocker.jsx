@@ -47,7 +47,7 @@ const screenshots = [
 ]
 
 const steps = [
-  'Click "Download for Windows" and get FolderLocker-Setup-<version>.exe.',
+  'Click "Download for Windows" and download the setup .exe from the release.',
   'Run the installer. Install for all users, or choose "Install for me only" to skip the admin prompt.',
   'Windows SmartScreen may warn because the installer is not code-signed yet. Click "More info" → "Run anyway".',
   'On first start, create a master password and save your recovery key somewhere safe.',
@@ -57,7 +57,7 @@ const FolderLocker = () => {
   const [preview, setPreview] = useState(null)
 
   useEffect(() => {
-    document.title = 'Folder Locker for Windows | Priyank Raychura'
+    document.title = 'Cloak - Lock & Encrypt Folders | Priyank Raychura'
   }, [])
 
   return (
@@ -67,12 +67,15 @@ const FolderLocker = () => {
         <div className="flex flex-col items-center text-center gap-5 mb-16 pt-6">
           <img
             src="/appIcons/folder-locker.png"
-            alt="Folder Locker icon"
+            alt="Cloak icon"
             width={96}
             height={96}
             className="w-24 h-24"
           />
-          <h1 className="headline-1 mx-auto">Folder Locker</h1>
+          <div>
+            <h1 className="headline-1 mx-auto">Cloak</h1>
+            <p className="title-1 text-zinc-300 mt-1">Lock &amp; Encrypt Folders</p>
+          </div>
           <p className="text-zinc-400 max-w-xl text-lg">
             Lock, encrypt and hide folders on Windows. Free, open source and private,
             built with Flutter and Rust.
