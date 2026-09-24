@@ -282,6 +282,12 @@ export const apps = [
         playStoreLink: 'https://play.google.com/store/apps/details?id=com.priyank.pushtimarg',
         plolicyLink: '/privacy-policy/pushtimarg'
     },
+    {
+        imgSrc: '/appIcons/folder-locker.png',
+        title: 'Folder Locker',
+        tags: ['Flutter', 'Rust', 'Windows'],
+        pageLink: '/apps/folder-locker'
+    },
     // {
     //     imgSrc: '/projects/project-32.png',
     //     title: 'Movie guide app',

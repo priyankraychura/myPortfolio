@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const AppCard = ({
     imgSrc,
@@ -8,6 +8,7 @@ const AppCard = ({
     tags,
     playStoreLink,
     plolicyLink,
+    pageLink,
     classes
 }) => {
     const navigate = useNavigate();
@@ -41,15 +42,23 @@ const AppCard = ({
                 </div>
             </div>
 
-            <a
-                href={playStoreLink}
-                target="_blank"
-                rel="noreferrer"
-                className="absolute inset-0 z-10"
-                aria-label={`View ${title}`}
-            ></a>
+            {pageLink ? (
+                <Link
+                    to={pageLink}
+                    className="absolute inset-0 z-10"
+                    aria-label={`View ${title}`}
+                ></Link>
+            ) : (
+                <a
+                    href={playStoreLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="absolute inset-0 z-10"
+                    aria-label={`View ${title}`}
+                ></a>
+            )}
 
-            <button
+            {plolicyLink && <button
                 className="w-8 h-8 rounded-lg grid place-items-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-50/10 z-20 transition-colors"
                 onClick={(e) => {
                     e.stopPropagation();
@@ -65,7 +74,7 @@ const AppCard = ({
                     alt="github"
                     className='opacity-70 group-hover:opacity-100 transition-opacity'
                 />
-            </button>
+            </button>}
         </div>
     )
 }
@@ -76,6 +85,7 @@ AppCard.propTypes = {
     tags: PropTypes.array.isRequired,
     playStoreLink: PropTypes.string,
     plolicyLink: PropTypes.string,
+    pageLink: PropTypes.string,
     classes: PropTypes.string
 }
 
