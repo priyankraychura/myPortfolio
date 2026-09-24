@@ -65,6 +65,6 @@ export const pushtimarg = {
   "contact": {
     "text": "If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at:",
     "email": "priyankraychura@gmail.com",
-    "website": "https://priyank.space"
+    "website": "https://priyank-raychura.vercel.app"
   }
 }
