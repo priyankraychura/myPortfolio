@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const REPO_URL = 'https://github.com/priyankraychura/desktop_folder_locker'
 const RELEASES_URL = `${REPO_URL}/releases/latest`
-const CI_BUILDS_URL = `${REPO_URL}/actions/workflows/ci.yml?query=branch%3Amain+is%3Asuccess`
+const CI_BUILDS_URL = `${REPO_URL}/actions/workflows/ci.yml?query=is%3Asuccess`
 
 const features = [
   {
