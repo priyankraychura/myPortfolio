@@ -286,7 +286,8 @@ export const apps = [
         imgSrc: '/appIcons/folder-locker.png',
         title: 'Cloak - Lock & Encrypt Folders',
         tags: ['Flutter', 'Rust', 'Windows'],
-        pageLink: '/apps/cloak'
+        pageLink: '/apps/cloak',
+        plolicyLink: '/privacy-policy/cloak'
     },
     // {
     //     imgSrc: '/projects/project-32.png',

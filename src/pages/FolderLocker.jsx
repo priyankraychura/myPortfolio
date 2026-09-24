@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const REPO_URL = 'https://github.com/priyankraychura/desktop_folder_locker'
 const RELEASES_URL = `${REPO_URL}/releases/latest`
@@ -198,6 +199,11 @@ const FolderLocker = () => {
             Cloak has no account, no cloud and no telemetry. Your passwords, recovery key and files
             stay on your PC. It never connects to the internet by itself: links, such as the Dokany
             download page, open in your browser only when you click them.
+          </p>
+          <p>
+            <Link to="/privacy-policy/cloak" className="text-sky-400 hover:underline">
+              Read the full privacy policy
+            </Link>
           </p>
         </div>
       </div>
