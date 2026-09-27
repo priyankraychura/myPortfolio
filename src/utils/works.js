@@ -289,6 +289,12 @@ export const apps = [
         pageLink: '/apps/cloak',
         plolicyLink: '/privacy-policy/cloak'
     },
+    {
+        imgSrc: '/appIcons/airkey.png',
+        title: 'AirKey - Smart Passkey',
+        tags: ['Flutter', 'Rust', 'Windows'],
+        plolicyLink: '/privacy-policy/airkey'
+    },
     // {
     //     imgSrc: '/projects/project-32.png',
     //     title: 'Movie guide app',
