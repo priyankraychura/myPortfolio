@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { createHeroScene } from '../three/heroScene'
+import useLazyScene from '../three/useLazyScene'
+import CountUp from './CountUp'
 import { ArrowRight, DownloadIcon } from './icons'
 import { LOGO_BLADES } from '../utils/logo'
 
 const CV_URL = 'https://drive.google.com/file/d/1vYR9LJQmxvr5v9_7WwG5JWlYT5mx5nWI/preview';
 
 const stats = [
-    { label: 'Projects shipped', value: '35', plus: true },
-    { label: 'Years building', value: '4', plus: true },
-    { label: 'Apps built', value: '3' },
-    { label: 'Awards in 2025', value: '4' },
+    { label: 'Projects shipped', value: 35, plus: true },
+    { label: 'Years building', value: 4, plus: true },
+    { label: 'Apps built', value: 3 },
+    { label: 'Awards in 2025', value: 4 },
 ];
 
 function useIndiaTime() {
@@ -37,13 +38,13 @@ export default function Hero() {
     const time = useIndiaTime();
     const coarse = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
 
-    useEffect(() => createHeroScene({
+    useLazyScene(() => import('../three/heroScene'), ({ createHeroScene }) => createHeroScene({
         container: visualRef.current,
         canvas: canvasRef.current,
         hero: heroRef.current,
         onLive: () => setSceneState('is-live'),
         onFallback: () => setSceneState('is-fallback'),
-    }), []);
+    }));
 
     return (
         <section id="home" className="rd-hero" ref={heroRef} aria-labelledby="hero-title">
@@ -94,7 +95,7 @@ export default function Hero() {
                     {stats.map(({ label, value, plus }) => (
                         <div key={label}>
                             <dt>{label}</dt>
-                            <dd>{value}{plus && <span className="rd-plus">+</span>}</dd>
+                            <dd><CountUp value={value} delay={1900} />{plus && <span className="rd-plus">+</span>}</dd>
                         </div>
                     ))}
                 </dl>

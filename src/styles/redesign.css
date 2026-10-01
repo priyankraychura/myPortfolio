@@ -466,6 +466,8 @@
 
 /* ---------- Awards ---------- */
 .rd-awards { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.rd-awards > li { display: flex; }
+.rd-awards .rd-award { flex: 1; }
 .rd-award {
   position: relative; display: flex; flex-direction: column; gap: 8px; padding: 24px;
   border: 1px solid var(--rd-line); border-radius: var(--rd-radius); background: var(--rd-glass);
@@ -531,6 +533,25 @@
 .rd-success p { margin: 0; max-width: 40ch; color: var(--rd-muted); }
 @media (min-width: 640px) { .rd-form-row { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 960px) { .rd-cta-panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+
+.rd-section--page { padding-top: calc(var(--rd-header-h) + clamp(48px, 8vw, 96px)); }
+.rd-section--page::before { display: none; }
+.rd-page-title {
+  margin: 0; font-family: var(--rd-font-display); font-stretch: 116%; font-weight: 650;
+  font-size: clamp(2.3rem, 1.2rem + 3.6vw, 4rem); line-height: 1.02; letter-spacing: -0.035em;
+}
+.rd-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.rd-filter {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--rd-line-strong); background: var(--rd-glass); color: var(--rd-muted);
+  -webkit-backdrop-filter: var(--rd-glass-blur); backdrop-filter: var(--rd-glass-blur);
+  font: 500 14px/1 var(--rd-font-body); cursor: pointer; transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.rd-filter:hover { color: var(--rd-text); border-color: var(--rd-sky-line); }
+.rd-filter.is-active { background: var(--rd-sky); border-color: var(--rd-sky); color: var(--rd-on-sky); }
+.rd-filter-count { font: 500 11px/1 var(--rd-font-mono); opacity: .7; font-variant-numeric: tabular-nums; }
+.rd-results { margin: 0 0 24px; font-size: 14px; color: var(--rd-faint); }
+.rd-results strong { color: var(--rd-text); font-weight: 500; }
 
 /* ---------- Footer ---------- */
 .rd-footer { padding-block: 8px 40px; }

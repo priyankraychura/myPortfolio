@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { MedalIcon } from './icons';
+import useTilt from '../hooks/useTilt';
 
 const awards = [
     {
@@ -28,6 +30,26 @@ const awards = [
     },
 ];
 
+function AwardCard({ date, title, issuer, description }) {
+    const tiltRef = useTilt(10);
+    return (
+        <div ref={tiltRef} className="rd-award rd-tilt">
+            <div className="rd-award-top"><span className="rd-award-date">{date}</span><MedalIcon /></div>
+            <h3>{title}</h3>
+            <p className="rd-award-issuer">{issuer}</p>
+            <p className="rd-award-desc">{description}</p>
+            <span className="rd-glare" aria-hidden="true"></span>
+        </div>
+    );
+}
+
+AwardCard.propTypes = {
+    date: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    issuer: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+};
+
 const HonorsAndAwards = () => {
     return (
         <section id="awards" className="rd-section" aria-labelledby="awards-title">
@@ -38,12 +60,9 @@ const HonorsAndAwards = () => {
                     <p className="rd-lede">Four recognitions in 2025, from college honors to first prizes at state and national IT fests.</p>
                 </header>
                 <ul className="rd-awards">
-                    {awards.map(({ date, title, issuer, description }, i) => (
-                        <li key={title} className="rd-award rd-reveal" style={{ '--d': `${i * 90}ms` }}>
-                            <div className="rd-award-top"><span className="rd-award-date">{date}</span><MedalIcon /></div>
-                            <h3>{title}</h3>
-                            <p className="rd-award-issuer">{issuer}</p>
-                            <p className="rd-award-desc">{description}</p>
+                    {awards.map((award, i) => (
+                        <li key={award.title} className="rd-reveal" style={{ '--d': `${i * 90}ms` }}>
+                            <AwardCard {...award} />
                         </li>
                     ))}
                 </ul>

@@ -54,7 +54,7 @@ export function createBackgroundScene({ canvas }) {
 
     // Where each shape lives along the page (0 = top, 1 = bottom), deterministic so the layout
     // feels designed rather than random on every visit
-    const COUNT = mobile ? 10 : 18;
+    const COUNT = mobile ? 7 : 18;
     const SPAN = 46;   // world units the camera travels from top to bottom of the page
     let seed = 7;
     const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
@@ -69,8 +69,8 @@ export function createBackgroundScene({ canvas }) {
             object = new THREE.Mesh(geo, kind === 0 ? metal : glass);
         }
         const side = i % 2 === 0 ? 1 : -1;
-        const spread = mobile ? [1.6, 3.2] : [3.6, 7.2];
-        const z = -7 + rand() * 7.5;
+        const spread = mobile ? [2.9, 3.8] : [3.6, 7.2];
+        const z = mobile ? -7 + rand() * 3 : -7 + rand() * 7.5;
         const frac = 0.05 + (i / (COUNT - 1)) * 0.95;
         object.userData = {
             baseX: side * (spread[0] + rand() * (spread[1] - spread[0])),

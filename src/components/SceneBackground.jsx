@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react'
-import { createBackgroundScene } from '../three/backgroundScene'
+import React, { useRef } from 'react'
+import useLazyScene from '../three/useLazyScene'
 
-// The fixed 3D layer behind every home-page section
+// The fixed 3D layer behind the redesigned pages
 export default function SceneBackground() {
     const canvasRef = useRef(null);
-    useEffect(() => createBackgroundScene({ canvas: canvasRef.current }), []);
+    useLazyScene(() => import('../three/backgroundScene'), ({ createBackgroundScene }) => createBackgroundScene({ canvas: canvasRef.current }));
     return <canvas className="rd-scene-bg" ref={canvasRef} aria-hidden="true"></canvas>;
 }

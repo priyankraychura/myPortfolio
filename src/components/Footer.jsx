@@ -2,19 +2,19 @@ import React from 'react'
 import { LogoMark } from './icons'
 
 const sitemap = [
-    { label: 'Products', href: '#products' },
-    { label: 'Work', href: '#work' },
-    { label: 'Stack', href: '#stack' },
-    { label: 'Education', href: '#education' },
-    { label: 'Awards', href: '#awards' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Products', href: '/#products' },
+    { label: 'Work', href: '/#work' },
+    { label: 'Stack', href: '/#stack' },
+    { label: 'Education', href: '/#education' },
+    { label: 'Awards', href: '/#awards' },
+    { label: 'Contact', href: '/#contact' },
 ];
 
 const Footer = () => {
     return (
         <footer className="rd-footer">
             <div className="rd-wrap rd-footer-inner">
-                <a className="rd-brand" href="#home" aria-label="Priyank Raychura, back to top">
+                <a className="rd-brand" href="/#home" aria-label="Priyank Raychura, back to top">
                     <LogoMark />
                     <span>Priyank Raychura</span>
                 </a>

@@ -1,72 +1,78 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ProjectCard from '../components/ProjectCard';
+import SceneBackground from '../components/SceneBackground';
+import Footer from '../components/Footer';
+import useReveal from '../hooks/useReveal';
 import { works } from '../utils/works';
 
-const AllProjects = () => {
-  const allTags = ['All', ...new Set(works.flatMap(work => work.tags))];
+const allTags = ['All', ...new Set(works.flatMap(work => work.tags))];
 
+const AllProjects = () => {
+  const pageRef = useRef(null);
   const [activeFilter, setActiveFilter] = useState('All');
-  const [filteredWorks, setFilteredWorks] = useState(works);
+  useReveal(pageRef);
 
   useEffect(() => {
-    if (activeFilter === 'All') {
-      setFilteredWorks(works);
-    } else {
-      const newFilteredWorks = works.filter(work =>
-        work.tags.includes(activeFilter)
-      );
-      setFilteredWorks(newFilteredWorks);
-    }
-  }, [activeFilter]);
+    document.title = 'All projects | Priyank Raychura';
+    return () => { document.title = 'Priyank Raychura - Portfolio'; };
+  }, []);
+
+  const filteredWorks = useMemo(
+    () => (activeFilter === 'All' ? works : works.filter(work => work.tags.includes(activeFilter))),
+    [activeFilter]
+  );
+  const countFor = (tag) => (tag === 'All' ? works.length : works.filter(work => work.tags.includes(tag)).length);
 
   return (
-    <section
-      id='work'
-      className="section"
-    >
-      <div className="container-wide">
-        {/* <div className="flex items-center justify-between mb-8"> */}
-          <h2 className="headline-2 mb-8">
-            My Development Journey
-          </h2>
-        {/* </div> */}
+    <div className="rd-page" ref={pageRef}>
+      <SceneBackground />
+      <main>
+        <section id="work" className="rd-section rd-section--page" aria-labelledby="projects-title">
+          <div className="rd-wrap">
+            <header className="rd-head rd-reveal">
+              <p className="rd-eyebrow">All projects</p>
+              <h1 id="projects-title" className="rd-page-title">My development journey</h1>
+              <p className="rd-lede">
+                {works.length} websites and web apps, from CSS landing pages to JavaScript tools and React projects. Filter by technology or type.
+              </p>
+            </header>
 
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          {allTags.map(tag => (
-            <button
-              key={tag}
-              onClick={() => setActiveFilter(tag)}
-              className={`
-                px-4 py-2 text-sm rounded-lg transition-colors
-                ${activeFilter === tag
-                  ? 'bg-blue-500  text-white border-blue-500'
-                  : 'bg-zinc-50/5 text-zinc-400 border-gray-300 hover:bg-blue-400/20 hover:text-white hover:border-blue-400/20'
-                }
-              `}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
+            <div className="rd-filters" role="group" aria-label="Filter projects">
+              {allTags.map(tag => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setActiveFilter(tag)}
+                  className={'rd-filter' + (activeFilter === tag ? ' is-active' : '')}
+                  aria-pressed={activeFilter === tag}
+                >
+                  {tag} <span className="rd-filter-count">{countFor(tag)}</span>
+                </button>
+              ))}
+            </div>
 
+            <p className="rd-results" aria-live="polite">
+              Showing {filteredWorks.length} {filteredWorks.length === 1 ? 'project' : 'projects'}
+              {activeFilter !== 'All' && <> tagged <strong>{activeFilter}</strong></>}
+            </p>
 
-        <div className="grid mb-8 gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-          {
-            filteredWorks.map(({ imgSrc, title, tags, projectLink, githubLink }, key) => (
-              <ProjectCard
-                key={key}
-                imgSrc={imgSrc}
-                title={title}
-                tags={tags}
-                projectLink={projectLink}
-                githubLink={githubLink}
-                classes=""
-              />
-            ))
-          }
-        </div>
-      </div>
-    </section>
+            <div className="rd-work-grid">
+              {filteredWorks.map(({ imgSrc, title, tags, projectLink, githubLink }) => (
+                <ProjectCard
+                  key={imgSrc}
+                  imgSrc={imgSrc}
+                  title={title}
+                  tags={tags}
+                  projectLink={projectLink}
+                  githubLink={githubLink}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
   )
 }
 
