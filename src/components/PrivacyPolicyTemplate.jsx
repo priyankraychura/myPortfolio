@@ -1,116 +1,135 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import SceneBackground from './SceneBackground';
+import Footer from './Footer';
+import useReveal from '../hooks/useReveal';
+import { ArrowUpRight } from './icons';
+
+const appIcons = {
+  pushtimarg: '/appIcons/pushtimarg.png',
+  cloak: '/appIcons/folder-locker.png',
+  airkey: '/appIcons/airkey.png',
+};
+
+const sectionId = (id) => `section-${id}`;
 
 const PrivacyPolicyTemplate = ({ data }) => {
+  const pageRef = useRef(null);
+  const [activeId, setActiveId] = useState(null);
+  useReveal(pageRef);
+
+  const { appName, lastUpdated, sections, contact } = data || {};
+
+  useEffect(() => {
+    if (!appName) return undefined;
+    document.title = `Privacy Policy for ${appName} | Priyank Raychura`;
+    return () => { document.title = 'Priyank Raychura - Portfolio'; };
+  }, [appName]);
+
+  // Highlight the section being read in the contents list
+  useEffect(() => {
+    if (!sections) return undefined;
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) setActiveId(entry.target.id); });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    pageRef.current?.querySelectorAll('.rd-policy-section').forEach((el) => spy.observe(el));
+    return () => spy.disconnect();
+  }, [sections]);
+
   if (!data) return null;
 
-  const { appName, lastUpdated, sections, contact } = data;
+  const icon = appIcons[appName.toLowerCase()];
+  const toc = [
+    ...sections.map((s) => ({ id: sectionId(s.id), label: s.title, n: s.id })),
+    ...(contact ? [{ id: 'section-contact', label: 'Contact Us', n: sections.length + 1 }] : []),
+  ];
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-zinc-300 font-sans selection:bg-sky-400/20 pt-20 lg:pt-32">
-      <div className="container max-w-4xl mx-auto px-4 pb-20">
-        
-        {/* Header */}
-        <header className="mb-8 border-b border-zinc-800 pb-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-50 mb-4">
-            Privacy Policy for <span className="text-sky-400">{appName}</span>
-          </h1>
-          <div className="flex items-center gap-2 text-sm md:text-base text-zinc-400">
-            <span className="material-symbols-rounded text-sky-400" aria-hidden="true">calendar_month</span>
-            <p>Last Updated: <span className="text-zinc-200 font-medium">{lastUpdated}</span></p>
-          </div>
-        </header>
+    <div className="rd-page" ref={pageRef}>
+      <SceneBackground />
+      <main>
+        <section className="rd-section rd-section--page">
+          <div className="rd-wrap">
+            <header className="rd-policy-head rd-reveal">
+              {icon && <img className="rd-app-icon" src={icon} alt="" width="64" height="64" />}
+              <div>
+                <p className="rd-eyebrow">Privacy policy</p>
+                <h1 className="rd-page-title">Privacy Policy for <span className="rd-grad">{appName}</span></h1>
+                <p className="rd-policy-date">Last Updated: <time>{lastUpdated}</time></p>
+              </div>
+            </header>
 
-        {/* Sections */}
-        <div className="space-y-12">
-          {sections.map((section) => (
-            <section key={section.id}>
-              <h2 className="text-xl md:text-2xl font-semibold text-zinc-100 mb-4 flex items-baseline gap-3">
-                <span className="text-sky-400/50 font-mono text-lg">{section.id}.</span>
-                {section.title}
-              </h2>
-              
-              {/* Main Description */}
-              {section.description && (
-                <div className="text-zinc-400 leading-relaxed whitespace-pre-wrap mb-4">
-                  {section.description}
-                </div>
-              )}
-
-              {/* Bullet Points */}
-              {section.points && section.points.length > 0 && (
-                <ul className="list-disc list-outside ml-6 space-y-2 mb-4 text-zinc-400 marker:text-sky-400">
-                  {section.points.map((point, index) => (
-                    <li key={index} className="pl-1">
-                      {point}
+            <div className="rd-policy-layout">
+              <nav className="rd-policy-toc" aria-label="On this page">
+                <p className="rd-policy-toc-title">On this page</p>
+                <ol>
+                  {toc.map(({ id, label, n }) => (
+                    <li key={id}>
+                      <a href={`#${id}`} className={activeId === id ? 'is-active' : ''}>
+                        <span>{String(n).padStart(2, '0')}</span>{label}
+                      </a>
                     </li>
                   ))}
-                </ul>
-              )}
+                </ol>
+              </nav>
 
-              {/* Sub-sections (e.g., Local Storage) */}
-              {section.subSections && section.subSections.length > 0 && (
-                <div className="space-y-4 mt-6 pl-4 md:pl-6 border-l-2 border-zinc-800">
-                  {section.subSections.map((sub, index) => (
-                    <div key={index}>
-                      <h3 className="text-zinc-200 font-semibold mb-1">
-                        {sub.title}:
-                      </h3>
-                      <p className="text-zinc-400 leading-relaxed">
-                        {sub.content}
-                      </p>
+              <div className="rd-policy-body">
+                {sections.map((section) => (
+                  <section key={section.id} id={sectionId(section.id)} className="rd-policy-section rd-reveal">
+                    <h2><span className="rd-policy-num">{String(section.id).padStart(2, '0')}</span>{section.title}</h2>
+
+                    {section.description && <p className="rd-policy-text">{section.description}</p>}
+
+                    {section.points?.length > 0 && (
+                      <ul className="rd-policy-points">
+                        {section.points.map((point, index) => <li key={index}>{point}</li>)}
+                      </ul>
+                    )}
+
+                    {section.subSections?.length > 0 && (
+                      <div className="rd-policy-subs">
+                        {section.subSections.map((sub, index) => (
+                          <div key={index} className="rd-policy-sub">
+                            <h3>{sub.title}</h3>
+                            <p>{sub.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.closingDescription && <p className="rd-policy-text">{section.closingDescription}</p>}
+                  </section>
+                ))}
+
+                {contact && (
+                  <section id="section-contact" className="rd-policy-section rd-reveal">
+                    <h2><span className="rd-policy-num">{String(sections.length + 1).padStart(2, '0')}</span>Contact Us</h2>
+                    <p className="rd-policy-text">{contact.text}</p>
+                    <div className="rd-policy-contact">
+                      {contact.email && (
+                        <div>
+                          <span className="rd-email-label">Email</span>
+                          <a href={`mailto:${contact.email}`} className="rd-inline-link">{contact.email}</a>
+                        </div>
+                      )}
+                      {contact.website && (
+                        <div>
+                          <span className="rd-email-label">Website</span>
+                          <a href={contact.website} target="_blank" rel="noopener noreferrer" className="rd-inline-link">{contact.website}</a>
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Closing Description */}
-              {section.closingDescription && (
-                <p className="text-zinc-400 leading-relaxed mt-4">
-                  {section.closingDescription}
-                </p>
-              )}
-            </section>
-          ))}
-
-          {/* Contact Section */}
-          {contact && (
-            <section className="pt-8 border-t border-zinc-800">
-              <h2 className="text-xl md:text-2xl font-semibold text-zinc-100 mb-4 flex items-baseline gap-3">
-                <span className="text-sky-400/50 font-mono text-lg">{sections.length + 1}.</span>
-                Contact Us
-              </h2>
-              <p className="text-zinc-400 mb-6">{contact.text}</p>
-              
-              <div className="grid gap-4 sm:grid-cols-2">
-                {contact.email && (
-                  <div className="bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50 flex items-center gap-3">
-                    <span className="material-symbols-rounded text-zinc-400">mail</span>
-                    <div>
-                      <span className="block text-xs text-zinc-500 uppercase tracking-wider font-semibold">Email</span>
-                      <a href={`mailto:${contact.email}`} className="text-sky-400 hover:text-sky-300 transition-colors">
-                        {contact.email}
-                      </a>
-                    </div>
-                  </div>
+                  </section>
                 )}
-                
-                {contact.website && (
-                  <div className="bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50 flex items-center gap-3">
-                    <span className="material-symbols-rounded text-zinc-400">language</span>
-                    <div>
-                      <span className="block text-xs text-zinc-500 uppercase tracking-wider font-semibold">Website</span>
-                      <a href={contact.website} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 transition-colors">
-                        {contact.website}
-                      </a>
-                    </div>
-                  </div>
-                )}
+
+                <Link to="/#products" className="rd-link rd-policy-back">Back to all apps <ArrowUpRight /></Link>
               </div>
-            </section>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };
