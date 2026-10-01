@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Onest', 'Inter', 'sans-serif'],
       },
       keyframes: {
         'loader-spin': {

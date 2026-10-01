@@ -1,66 +1,65 @@
 import React from 'react';
-import TimelineItem from './TimelineItem';
 
 const educationData = [
     {
-        year: '2025 - 2027',
-        title: 'Master of Science in Information Technology',
+        year: '2025 – 2027',
+        title: 'M.Sc. Information Technology',
         institution: 'Grace College, Rajkot',
         university: 'Saurashtra University',
-        percentage: 'Pursuing'
+        result: 'Pursuing',
+        current: true
     },
     {
-        year: '2022 - 2025',
-        title: 'Bachelor of Computer Applications (BCA)',
+        year: '2022 – 2025',
+        title: 'Bachelor of Computer Applications',
         institution: 'Christ College, Rajkot',
         university: 'Saurashtra University',
-        percentage: 'PR: 83.17%'
+        result: 'PR 83.17%'
     },
     {
-        year: '2019 - 2022',
-        title: 'Bachelor of Commerce (B.Com)',
+        year: '2019 – 2022',
+        title: 'Bachelor of Commerce',
         institution: 'Sydenham College of Commerce & Economics',
         university: 'Dr. Homi Bhabha State University',
-        percentage: 'CGPA: 8.39'
+        result: 'CGPA 8.39'
     },
     {
-        year: '2018 - 2019',
-        title: 'Higher Secondary (12th Grade)',
+        year: '2018 – 2019',
+        title: 'Higher Secondary (12th)',
         institution: 'Shree L.D.P. Highschool',
         university: 'GHSEB, Gujarat',
-        percentage: 'PR: 80.86'
+        result: 'PR 80.86'
     },
     {
-        year: '2016 - 2017',
-        title: 'Secondary (10th Grade)',
+        year: '2016 – 2017',
+        title: 'Secondary (10th)',
         institution: 'Shree L.N.P. Highschool',
         university: 'GSEB, Gujarat',
-        percentage: 'PR: 74.67'
+        result: 'PR 74.67'
     }
 ];
 
 const Education = () => {
     return (
-        <section id="education" className="section">
-            <div className="container">
-                <h2 className="headline-2 reveal-up mb-8">
-                    My Education
-                </h2>
-
-                <div className="relative">
-                    {educationData.map((item, index) => (
-                        <TimelineItem
-                            key={index}
-                            year={item.year}
-                            title={item.title}
-                            institution={item.institution}
-                            university={item.university}
-                            percentage={item.percentage}
-                            isLast={index === educationData.length - 1}
-                            index={index}
-                        />
+        <section id="education" className="rd-section" aria-labelledby="education-title">
+            <div className="rd-wrap rd-split">
+                <header className="rd-head">
+                    <p className="rd-eyebrow">Education</p>
+                    <h2 id="education-title">Commerce first, then code</h2>
+                    <p className="rd-lede">A commerce degree, then computer applications. Now completing a master&apos;s in IT at Saurashtra University.</p>
+                </header>
+                <ol className="rd-timeline">
+                    {educationData.map(({ year, title, institution, university, result, current }) => (
+                        <li key={year} className={'rd-tl-item' + (current ? ' is-current' : '')}>
+                            <span className="rd-tl-year">{year}</span>
+                            <div className="rd-tl-body">
+                                <h3>{title}</h3>
+                                <p>{institution} · {university}</p>
+                            </div>
+                            <span className={'rd-result' + (current ? ' rd-result--live' : '')}>{result}</span>
+                        </li>
                     ))}
-                </div>
+                </ol>
             </div>
         </section>
     );

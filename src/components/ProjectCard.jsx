@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import useTilt from '../hooks/useTilt'
+import { ArrowUpRight, GitHubIcon } from './icons'
 
 const ProjectCard = ({
     imgSrc,
@@ -7,79 +9,45 @@ const ProjectCard = ({
     tags,
     projectLink,
     githubLink,
-    classes
+    classes = ''
 }) => {
+    const tiltRef = useTilt(9);
+
     return (
-        <div className={"p-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700/50 active:bg-zinc-700/60 ring-1 ring-inset ring-zinc-50/5 transition-colors " + classes}>
-            <figure className="relative img-box aspect-video rounded-lg mb-4">
-                <img
-                    src={imgSrc}
-                    alt={title}
-                    loading='lazy'
-                    className="img-cover"
-                />
-                <a
-                    href={projectLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute inset-0"
-                >
-                </a>
-            </figure>
-
-            <div className="flex items-center justify-between gap-4">
-                <div>
-                    <h3 className="title-1 mb-3">
-                        {title}
-                    </h3>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                        {
-                            tags.map((label, key) => (
-                                <span
-                                    key={key}
-                                    className="h-8 text-sm text-zinc-400 bg-zinc-50/5 grid items-center px-3 rounded-lg"
-                                >
-                                    {label}
-                                </span>
-                            ))
-                        }
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                    <div className="relative w-8 h-8 rounded-lg grid place-items-center bg-sky-400 text-zinc-950 shrink-0">
-                        <span
-                            className="material-symbols-rounded"
-                            aria-hidden="true"
-                        >
-                            arrow_outward
-                        </span>
-                        <a
-                            href={projectLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="absolute inset-0"
-                        >
+        <article ref={tiltRef} className={'rd-work-card rd-tilt ' + classes}>
+            <a
+                className="rd-work-media rd-z2"
+                href={projectLink || githubLink}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${title}`}
+            >
+                <img src={imgSrc} alt="" width="1616" height="1010" loading="lazy" />
+            </a>
+            <div className="rd-work-meta rd-z1">
+                <h3>{title}</h3>
+                <ul className="rd-tags">
+                    {tags.map((label) => <li key={label}>{label}</li>)}
+                </ul>
+                <div className="rd-work-links">
+                    {projectLink && (
+                        <a className="rd-icon-link" href={projectLink} target="_blank" rel="noreferrer" aria-label={`Live site: ${title}`} title="Live site">
+                            <ArrowUpRight />
                         </a>
-                    </div>
-                    <img
-                        src="./images/github4.svg"
-                        width={36}
-                        height={36}
-                        className='opacity-60 cursor-pointer'
-                        alt="github"
-                        onClick={() => window.open(githubLink, '_blank')}
-                    />
+                    )}
+                    {githubLink && (
+                        <a className="rd-icon-link" href={githubLink} target="_blank" rel="noreferrer" aria-label={`Source code: ${title}`} title="Source code">
+                            <GitHubIcon />
+                        </a>
+                    )}
                 </div>
-
-
             </div>
-        </div>
+            <span className="rd-glare" aria-hidden="true"></span>
+        </article>
     )
 }
 
-ProjectCard.protoTypes = {
+ProjectCard.propTypes = {
     imgSrc: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     tags: PropTypes.array.isRequired,

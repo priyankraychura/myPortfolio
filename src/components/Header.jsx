@@ -1,94 +1,138 @@
-import React, { useState } from 'react'
-import Navbar from './Navbar'
-import { Link } from 'react-router-dom'
-import { PuffLoader } from "react-spinners";
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import { Link, useLocation } from 'react-router-dom'
+import { PuffLoader } from 'react-spinners'
+import { CloseIcon, LogoMark, MenuIcon } from './icons'
+
+const navItems = [
+    { label: 'Products', id: 'products' },
+    { label: 'Work', id: 'work' },
+    { label: 'Stack', id: 'stack' },
+    { label: 'Education', id: 'education' },
+    { label: 'Awards', id: 'awards' },
+];
 
 export default function Header({ onLoginRegisterClick, userData, onLogout, isLoading }) {
     const [navOpen, setNavOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [activeId, setActiveId] = useState('');
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 8);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // Highlight the home-page section in view
+    useEffect(() => {
+        setActiveId('');
+        if (pathname !== '/') return undefined;
+        const spy = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) setActiveId(entry.target.id); });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        document.querySelectorAll('main section[id]').forEach((section) => spy.observe(section));
+        return () => spy.disconnect();
+    }, [pathname]);
+
+    useEffect(() => {
+        if (!navOpen) return undefined;
+        const onKey = (e) => { if (e.key === 'Escape') setNavOpen(false); };
+        document.addEventListener('keydown', onKey);
+        return () => document.removeEventListener('keydown', onKey);
+    }, [navOpen]);
+
+    const closeNav = () => setNavOpen(false);
+
+    let account;
+    if (isLoading) {
+        account = (
+            <div className="rd-header-login" style={{ width: 36, height: 36, alignItems: 'center', justifyContent: 'center' }}>
+                <PuffLoader color="white" size={32} aria-label="Loading account" />
+            </div>
+        );
+    } else if (userData?.profileImg) {
+        account = (
+            <div className="rd-header-login" style={{ position: 'relative' }}>
+                <button
+                    type="button"
+                    className="rd-avatar-btn"
+                    onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                    aria-expanded={isProfileMenuOpen}
+                    aria-label="Account menu"
+                >
+                    <img src={userData.profileImg} alt="" referrerPolicy="no-referrer" />
+                </button>
+                {isProfileMenuOpen && (
+                    <div className="rd-profile-menu">
+                        <p>{userData.name}</p>
+                        <p className="rd-profile-email">{userData.email}</p>
+                        <button type="button" onClick={() => { setIsProfileMenuOpen(false); onLogout(); }}>Log out</button>
+                    </div>
+                )}
+            </div>
+        );
+    } else {
+        account = (
+            <button type="button" className="rd-btn rd-btn-ghost rd-btn-sm rd-header-login" onClick={onLoginRegisterClick}>
+                Log in
+            </button>
+        );
+    }
 
     return (
-        <header className="fixed top-0 left-0 w-full h-20 flex items-center z-40 bg-gradient-to-b from-zinc-900 to-zinc-900/0">
-            <div className="max-w-screen-2xl w-full mx-auto px-4 flex justify-between items-center md:px-6 md:grid-cols md:grid-cols-[1fr, 3fr, 1fr]">
-                <h1>
-                    <Link to="/" className='logo'>
-                        <img
-                            src="/images/logo.svg"
-                            width={40}
-                            height={40}
-                            alt="Priyank Raychura" />
-                    </Link>
-                </h1>
-                <div className="relative md:justify-self-center">
+        <header className={'rd-header' + (scrolled ? ' is-scrolled' : '') + (navOpen ? ' is-open' : '')}>
+            <div className="rd-wrap rd-header-inner">
+                <Link className="rd-brand" to="/" aria-label="Priyank Raychura, home">
+                    <LogoMark />
+                    <span>Priyank Raychura</span>
+                </Link>
+
+                <nav className="rd-nav" aria-label="Primary">
+                    {navItems.map(({ label, id }) => (
+                        <a key={id} href={`/#${id}`} className={activeId === id ? 'is-active' : ''}>{label}</a>
+                    ))}
+                </nav>
+
+                <div className="rd-header-actions">
+                    {account}
+                    <a className="rd-btn rd-btn-primary rd-btn-sm rd-header-cta" href="/#contact">Start a project</a>
                     <button
-                        className='menu-btn md:hidden'
+                        type="button"
+                        className="rd-menu-btn"
                         onClick={() => setNavOpen((prev) => !prev)}
+                        aria-expanded={navOpen}
+                        aria-controls="rd-mobile-nav"
+                        aria-label={navOpen ? 'Close menu' : 'Open menu'}
                     >
-                        <span className='material-symbols-rounded'>
-                            {navOpen ? 'close' : 'menu'}
-                        </span>
+                        {navOpen ? <CloseIcon /> : <MenuIcon />}
                     </button>
-
-                    <Navbar navOpen={navOpen} onLoginRegisterClick={onLoginRegisterClick} userData={userData} onLogout={onLogout} />
                 </div>
-
-                <div className="relative md:justify-self-end max-md:hidden">
-                    {isLoading ? (
-                        <div className="w-9 h-9 flex items-center justify-center">
-                            <PuffLoader
-                                color="white"
-                                loading={true}
-                                size={36}
-                                aria-label="Loading Spinner"
-                                data-testid="loader"
-                            />
-                        </div>
-                    ) : userData && userData.profileImg ? (
-                        <div>
-                            <button
-                                onClick={() => setIsProfileMenuOpen(prev => !prev)}
-                                className="img-box w-9 h-9 rounded-xl overflow-hidden cursor-pointer"
-                            >
-                                <img
-                                    src={userData.profileImg}
-                                    alt={userData.name}
-                                    width={40}
-                                    height={40}
-                                    className='img-cover'
-                                    referrerPolicy='no-referrer'
-                                />
-                            </button>
-
-                            {isProfileMenuOpen && (
-                                <div className="absolute top-full right-0 mt-2 w-60 bg-zinc-800 rounded-xl shadow-lg ring-1 ring-zinc-50/5 p-4 z-50">
-                                    <div className="flex items-center gap-3 pb-3 mb-3 border-b border-b-zinc-700">
-                                        <div>
-                                            <p className="font-semibold text-white">{userData.name}</p>
-                                            <p className="text-sm text-zinc-400">{userData.email}</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={onLogout}
-                                        className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-red-700/10 rounded-md flex items-center gap-2"
-                                    >
-                                        <span className="material-symbols-rounded">logout</span>
-                                        Logout
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        <button
-                            onClick={onLoginRegisterClick}
-                            className='btn btn-secondary max-md:hidden'
-                        >
-                            Login
-                        </button>
-                    )}
-                </div>
-
-
             </div>
+
+            {navOpen && (
+                <nav className="rd-mobile-nav" id="rd-mobile-nav" aria-label="Mobile">
+                    {navItems.map(({ label, id }) => (
+                        <a key={id} href={`/#${id}`} onClick={closeNav}>{label}</a>
+                    ))}
+                    <a href="/#contact" onClick={closeNav}>Contact</a>
+                    <hr />
+                    {userData?.profileImg ? (
+                        <button type="button" onClick={() => { closeNav(); onLogout(); }}>Log out ({userData.name})</button>
+                    ) : (
+                        <button type="button" onClick={() => { closeNav(); onLoginRegisterClick(); }}>Log in</button>
+                    )}
+                </nav>
+            )}
         </header>
     )
+}
+
+Header.propTypes = {
+    onLoginRegisterClick: PropTypes.func.isRequired,
+    userData: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    onLogout: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 }

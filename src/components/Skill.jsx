@@ -1,113 +1,56 @@
 import React from 'react'
-import SkillCard from './SkillCard';
+import TechGlobe from './TechGlobe'
 
-const skillItem = [
-  {
-    imgSrc: '/images/html5.svg',
-    label: 'HTML',
-    desc: 'Web Structure'
-  },
-  {
-    imgSrc: '/images/css3.svg',
-    label: 'CSS',
-    desc: 'User Interface'
-  },
-  {
-    imgSrc: '/images/javascript.svg',
-    label: 'JavaScript',
-    desc: 'Interaction'
-  },
-  {
-    imgSrc: '/images/bootstrap.svg',
-    label: 'Bootstrap',
-    desc: 'CSS Framework'
-  },
-  {
-    imgSrc: '/images/react.svg',
-    label: 'React',
-    desc: 'Framework'
-  },
-  {
-    imgSrc: '/images/nodejs.svg',
-    label: 'NodeJS',
-    desc: 'Web Server'
-  },
-  {
-    imgSrc: '/images/expressjs.svg',
-    label: 'ExpressJS',
-    desc: 'Node Framework'
-  },
-  {
-    imgSrc: '/images/mongodb.svg',
-    label: 'MongoDB',
-    desc: 'Document Database'
-  },
-  {
-    imgSrc: '/images/php.svg',
-    label: 'PHP',
-    desc: 'Server-side scripting'
-  },
-  {
-    imgSrc: '/images/mysql.svg',
-    label: 'MySQL',
-    desc: 'Relational Database'
-  },
-  {
-    imgSrc: '/images/python.svg',
-    label: 'python',
-    desc: 'Programming Language'
-  },
-  {
-    imgSrc: '/images/django.svg',
-    label: 'Django',
-    desc: 'Python Framework'
-  },
-  {
-    imgSrc: '/images/java.svg',
-    label: 'Java',
-    desc: 'Programming Language'
-  },
-  {
-    imgSrc: '/images/tailwindcss.svg',
-    label: 'TailwindCSS',
-    desc: 'User Interface'
-  },
-  {
-    imgSrc: '/images/github.svg',
-    label: 'GitHub',
-    desc: 'Version Control'
-  },
-  {
-    imgSrc: '/images/figma.svg',
-    label: 'Figma',
-    desc: 'Design tool'
-  },
+const layers = [
+  { name: 'Interface', tools: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Bootstrap'] },
+  { name: 'Server', tools: ['Node.js', 'Express', 'PHP', 'Python', 'Django', 'Java'] },
+  { name: 'Data', tools: ['MongoDB', 'MySQL'] },
+  { name: 'Native apps', tools: ['Flutter', 'Rust', 'React Native'] },
+  { name: 'Workflow', tools: ['GitHub', 'Figma'] },
 ];
+
+const icons = {
+  'HTML': '/images/html5.svg',
+  'CSS': '/images/css3.svg',
+  'JavaScript': '/images/javascript.svg',
+  'React': '/images/react.svg',
+  'Tailwind CSS': '/images/tailwindcss.svg',
+  'Bootstrap': '/images/bootstrap.svg',
+  'Node.js': '/images/nodejs.svg',
+  'Express': '/images/expressjs.svg',
+  'PHP': '/images/php.svg',
+  'Python': '/images/python.svg',
+  'Django': '/images/django.svg',
+  'Java': '/images/java.svg',
+  'MongoDB': '/images/mongodb.svg',
+  'MySQL': '/images/mysql.svg',
+  'Flutter': '/images/flutter.svg',
+  'React Native': '/images/react.svg',
+  'GitHub': '/images/github.svg',
+  'Figma': '/images/figma.svg',
+};
+
+const globeItems = layers.flatMap(({ tools }) => tools).map((label) => ({ label, icon: icons[label] }));
 
 const Skill = () => {
   return (
-    <section className="section">
-      <div className="container">
-        <h2 className="headline-2 reveal-up">
-          Essential Tools I use
-        </h2>
-
-        <p className="text-zinc-400 mt-3 mb-8 max-w-[50ch] reveal-up">
-          Discover the powerful tools and technologies I use to create exceptional, high-performing websites & applications.
-        </p>
-
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
-          {
-            skillItem.map(({ imgSrc, label, desc }, key) => (
-              <SkillCard
-                key={key}
-                imgSrc={imgSrc}
-                label={label}
-                desc={desc}
-                classes="reveal-up"
-              />
-            ))
-          }
+    <section id="stack" className="rd-section" aria-labelledby="stack-title">
+      <div className="rd-wrap rd-split">
+        <header className="rd-head">
+          <p className="rd-eyebrow">Stack</p>
+          <h2 id="stack-title">Tools I build with</h2>
+          <p className="rd-lede">The languages, frameworks and services behind my websites and apps, from the interface down to the data.</p>
+          <TechGlobe items={globeItems} />
+        </header>
+        <div className="rd-stack">
+          {layers.map(({ name, tools }) => (
+            <div className="rd-layer" key={name}>
+              <p className="rd-layer-name">{name}</p>
+              <ul className="rd-chips">
+                {tools.map((tool) => <li key={tool}>{tool}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>

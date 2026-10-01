@@ -1,42 +1,39 @@
 import React from 'react'
-import ProjectCard from './ProjectCard';
-import { Link } from 'react-router-dom';
-import { works } from '../utils/works';
+import { Link } from 'react-router-dom'
+import ProjectCard from './ProjectCard'
+import { ArrowUpRight } from './icons'
+import { works } from '../utils/works'
 
 const Work = () => {
     return (
-        <section
-            id='work'
-            className="section"
-        >
-            <div className="container">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="headline-2 reveal-up">
-                        My portfolio highlights
-                    </h2>
+        <section id="work" className="rd-section" aria-labelledby="work-title">
+            <div className="rd-wrap">
+                <header className="rd-head rd-head--row">
+                    <div>
+                        <p className="rd-eyebrow">Selected work</p>
+                        <h2 id="work-title">Portfolio highlights</h2>
+                        <p className="rd-lede">
+                            Six of the {works.length} websites and web apps I&apos;ve built, from a React food-delivery site to JavaScript apps for weather and movies.
+                        </p>
+                    </div>
+                    <Link className="rd-link" to="/all-projects">View all {works.length} projects <ArrowUpRight /></Link>
+                </header>
 
-                    <h3 className="text-sky-400 font-semibold md:text-lg">
-                        <Link to={'/all-projects'}>View all</Link>
-                    </h3>
-                </div>
-
-                <div className="grid gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-                    {
-                        works?.slice(0, 6)?.map(({ imgSrc, title, tags, projectLink, githubLink }, key) => (
-                            <ProjectCard
-                                key={key}
-                                imgSrc={imgSrc}
-                                title={title}
-                                tags={tags}
-                                projectLink={projectLink}
-                                githubLink={githubLink}
-                                classes="reveal-up"
-                            />
-                        ))
-                    }
+                <div className="rd-work-grid">
+                    {works.slice(0, 6).map(({ imgSrc, title, tags, projectLink, githubLink }) => (
+                        <ProjectCard
+                            key={title}
+                            imgSrc={imgSrc}
+                            title={title}
+                            tags={tags.slice(0, 2)}
+                            projectLink={projectLink}
+                            githubLink={githubLink}
+                        />
+                    ))}
                 </div>
             </div>
         </section>
     )
 }
+
 export default Work

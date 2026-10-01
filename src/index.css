@@ -8,7 +8,8 @@ html {
 }
 
 body {
-	@apply bg-zinc-900 text-zinc-50;
+	@apply text-zinc-50;
+	background-color: #07090d;
 }
 
 /* TYPOGRAPHY */
