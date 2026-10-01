@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 import { PuffLoader } from 'react-spinners'
@@ -18,9 +18,14 @@ export default function Header({ onLoginRegisterClick, userData, onLogout, isLoa
     const [scrolled, setScrolled] = useState(false);
     const [activeId, setActiveId] = useState('');
     const { pathname } = useLocation();
+    const headerRef = useRef(null);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 8);
+        const onScroll = () => {
+            setScrolled(window.scrollY > 8);
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            headerRef.current?.style.setProperty('--rd-progress', max > 0 ? (window.scrollY / max).toFixed(4) : '0');
+        };
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
@@ -83,7 +88,7 @@ export default function Header({ onLoginRegisterClick, userData, onLogout, isLoa
     }
 
     return (
-        <header className={'rd-header' + (scrolled ? ' is-scrolled' : '') + (navOpen ? ' is-open' : '')}>
+        <header ref={headerRef} className={'rd-header' + (scrolled ? ' is-scrolled' : '') + (navOpen ? ' is-open' : '')}>
             <div className="rd-wrap rd-header-inner">
                 <Link className="rd-brand" to="/" aria-label="Priyank Raychura, home">
                     <LogoMark />

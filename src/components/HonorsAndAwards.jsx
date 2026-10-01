@@ -32,14 +32,14 @@ const HonorsAndAwards = () => {
     return (
         <section id="awards" className="rd-section" aria-labelledby="awards-title">
             <div className="rd-wrap">
-                <header className="rd-head">
+                <header className="rd-head rd-reveal">
                     <p className="rd-eyebrow">Recognition</p>
                     <h2 id="awards-title">Honors &amp; awards</h2>
                     <p className="rd-lede">Four recognitions in 2025, from college honors to first prizes at state and national IT fests.</p>
                 </header>
                 <ul className="rd-awards">
-                    {awards.map(({ date, title, issuer, description }) => (
-                        <li key={title} className="rd-award">
+                    {awards.map(({ date, title, issuer, description }, i) => (
+                        <li key={title} className="rd-award rd-reveal" style={{ '--d': `${i * 90}ms` }}>
                             <div className="rd-award-top"><span className="rd-award-date">{date}</span><MedalIcon /></div>
                             <h3>{title}</h3>
                             <p className="rd-award-issuer">{issuer}</p>

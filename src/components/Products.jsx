@@ -80,7 +80,7 @@ function ProductCard({ product }) {
     const main = (
         <>
             <div className="rd-product-top rd-z1">
-                <img className="rd-app-icon" src={icon} alt="" width="52" height="52" />
+                <img className="rd-app-icon rd-pop" src={icon} alt="" width="52" height="52" />
                 <div className="rd-product-name">
                     <h3>{name}</h3>
                     <p className="rd-product-tag">{tagline}</p>
@@ -127,12 +127,12 @@ export default function Products() {
     return (
         <section id="products" className="rd-section" aria-labelledby="products-title">
             <div className="rd-wrap">
-                <header className="rd-head">
+                <header className="rd-head rd-reveal">
                     <p className="rd-eyebrow">Products</p>
                     <h2 id="products-title">Apps I&apos;ve designed and built end to end.</h2>
                     <p className="rd-lede">Three apps for Windows and Android, from folder encryption to fingerprint unlock to a companion for the Pushtimarg community.</p>
                 </header>
-                <div className="rd-products">
+                <div className="rd-products rd-reveal">
                     {products.map((product) => <ProductCard key={product.id} product={product} />)}
                 </div>
             </div>

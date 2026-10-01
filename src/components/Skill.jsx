@@ -36,13 +36,13 @@ const Skill = () => {
   return (
     <section id="stack" className="rd-section" aria-labelledby="stack-title">
       <div className="rd-wrap rd-split">
-        <header className="rd-head">
+        <header className="rd-head rd-reveal">
           <p className="rd-eyebrow">Stack</p>
           <h2 id="stack-title">Tools I build with</h2>
           <p className="rd-lede">The languages, frameworks and services behind my websites and apps, from the interface down to the data.</p>
           <TechGlobe items={globeItems} />
         </header>
-        <div className="rd-stack">
+        <div className="rd-stack rd-reveal">
           {layers.map(({ name, tools }) => (
             <div className="rd-layer" key={name}>
               <p className="rd-layer-name">{name}</p>

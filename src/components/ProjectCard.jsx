@@ -14,7 +14,7 @@ const ProjectCard = ({
     const tiltRef = useTilt(9);
 
     return (
-        <article ref={tiltRef} className={'rd-work-card rd-tilt ' + classes}>
+        <article ref={tiltRef} className={'rd-work-card rd-tilt rd-glassy ' + classes}>
             <a
                 className="rd-work-media rd-z2"
                 href={projectLink || githubLink}

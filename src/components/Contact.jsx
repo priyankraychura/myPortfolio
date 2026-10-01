@@ -95,7 +95,7 @@ const Contact = () => {
     return (
         <section id="contact" className="rd-section" aria-labelledby="contact-title">
             <div className="rd-wrap">
-                <div className="rd-cta-panel">
+                <div className="rd-cta-panel rd-reveal">
                     <LogoMark className="rd-cta-mark" stroke="currentColor" strokeWidth={0.12} />
                     <div>
                         <p className="rd-eyebrow">Contact</p>

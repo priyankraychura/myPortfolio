@@ -43,14 +43,14 @@ const Education = () => {
     return (
         <section id="education" className="rd-section" aria-labelledby="education-title">
             <div className="rd-wrap rd-split">
-                <header className="rd-head">
+                <header className="rd-head rd-reveal">
                     <p className="rd-eyebrow">Education</p>
                     <h2 id="education-title">Commerce first, then code</h2>
                     <p className="rd-lede">A commerce degree, then computer applications. Now completing a master&apos;s in IT at Saurashtra University.</p>
                 </header>
                 <ol className="rd-timeline">
-                    {educationData.map(({ year, title, institution, university, result, current }) => (
-                        <li key={year} className={'rd-tl-item' + (current ? ' is-current' : '')}>
+                    {educationData.map(({ year, title, institution, university, result, current }, i) => (
+                        <li key={year} className={'rd-tl-item rd-reveal' + (current ? ' is-current' : '')} style={{ '--d': `${i * 70}ms` }}>
                             <span className="rd-tl-year">{year}</span>
                             <div className="rd-tl-body">
                                 <h3>{title}</h3>

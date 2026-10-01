@@ -76,7 +76,7 @@ export default function Hero() {
                         </>}
                     </p>
                     <h1 id="hero-title">
-                        Building modern software <span className="rd-soft">for the web, Windows and Android.</span>
+                        <span className="rd-grad">Building modern software</span> <span className="rd-soft">for the web, Windows and Android.</span>
                     </h1>
                     <p className="rd-lead">
                         I&apos;m <strong>Priyank Raychura</strong>, a full-stack developer in Rajkot, India. I build fast,

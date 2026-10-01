@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { LOGO_BLADES } from '../utils/logo'
+import { createStudioEnvironment } from './studio'
 
 /**
  * The hero's WebGL scene: the logo's two blades extruded in brand-blue metal. On load they
@@ -27,30 +28,8 @@ export function createHeroScene({ container, canvas, hero, onLive, onFallback })
     const disposables = [];
     const track = (thing) => { disposables.push(thing); return thing; };
 
-    // ---- Studio lighting: soft boxes and colored strips, prefiltered into reflections ----
-    const studio = new THREE.Scene();
-    studio.add(new THREE.Mesh(
-        track(new THREE.BoxGeometry(24, 14, 24)),
-        track(new THREE.MeshBasicMaterial({ color: 0x06080c, side: THREE.BackSide }))
-    ));
-    const lamp = (w, h, hex, power, x, y, z) => {
-        const mesh = new THREE.Mesh(
-            track(new THREE.PlaneGeometry(w, h)),
-            track(new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(power), side: THREE.DoubleSide }))
-        );
-        mesh.position.set(x, y, z);
-        mesh.lookAt(0, 0, 0);
-        studio.add(mesh);
-    };
-    lamp(12, 2.4, 0xffffff, 3.0, 0, 6.5, 0);      // overhead soft box
-    lamp(1.4, 9, 0x7dd3fc, 5.0, -8, 0, 2);         // sky strip, left
-    lamp(1.0, 9, 0xffffff, 3.2, 8, 0.5, 1);        // white strip, right
-    lamp(9, 4, 0xa8c8f0, 0.5, 0, 1, 10);           // faint front fill
-    lamp(8, 1.2, 0x38bdf8, 2.4, 0, -5.5, 5);       // sky bounce, below
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    const envTarget = pmrem.fromScene(studio, 0.035);
+    const envTarget = createStudioEnvironment(renderer);
     scene.environment = envTarget.texture;
-    pmrem.dispose();
 
     // ---- The mark ----
     function shapeFrom(d) {

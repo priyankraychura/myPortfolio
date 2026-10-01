@@ -8,7 +8,7 @@ const Work = () => {
     return (
         <section id="work" className="rd-section" aria-labelledby="work-title">
             <div className="rd-wrap">
-                <header className="rd-head rd-head--row">
+                <header className="rd-head rd-head--row rd-reveal">
                     <div>
                         <p className="rd-eyebrow">Selected work</p>
                         <h2 id="work-title">Portfolio highlights</h2>
@@ -20,15 +20,16 @@ const Work = () => {
                 </header>
 
                 <div className="rd-work-grid">
-                    {works.slice(0, 6).map(({ imgSrc, title, tags, projectLink, githubLink }) => (
-                        <ProjectCard
-                            key={title}
-                            imgSrc={imgSrc}
-                            title={title}
-                            tags={tags.slice(0, 2)}
-                            projectLink={projectLink}
-                            githubLink={githubLink}
-                        />
+                    {works.slice(0, 6).map(({ imgSrc, title, tags, projectLink, githubLink }, i) => (
+                        <div key={title} className="rd-reveal" style={{ '--d': `${(i % 3) * 90}ms` }}>
+                            <ProjectCard
+                                imgSrc={imgSrc}
+                                title={title}
+                                tags={tags.slice(0, 2)}
+                                projectLink={projectLink}
+                                githubLink={githubLink}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
