@@ -302,7 +302,6 @@
   background: var(--rd-glass); -webkit-backdrop-filter: var(--rd-glass-blur); backdrop-filter: var(--rd-glass-blur);
   transform: translateZ(-1px);
 }
-.rd-glassy > * { position: relative; }
 
 /* ---------- 3D scroll reveal ---------- */
 .rd-js .rd-reveal {
@@ -350,6 +349,9 @@
   -webkit-backdrop-filter: var(--rd-glass-blur); backdrop-filter: var(--rd-glass-blur);
 }
 .rd-product:hover { border-color: var(--rd-line-strong); }
+/* Keep the glass layer behind the content even where 3D depth is turned off (touch screens) */
+.rd-product::before, .rd-glassy::before { z-index: 0; }
+.rd-product > *, .rd-glassy > * { position: relative; z-index: 1; }
 .rd-product-main { display: flex; flex-direction: column; gap: 22px; min-width: 0; transform-style: preserve-3d; }
 .rd-product-top { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .rd-app-icon { width: 52px; height: 52px; flex: none; border-radius: 14px; object-fit: cover; box-shadow: 0 10px 28px -10px var(--glow); }
