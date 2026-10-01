@@ -312,6 +312,15 @@
 }
 .rd-js .rd-reveal.is-in { opacity: 1; transform: none; }
 
+/* Touch screens: no tilt, so drop the 3D layering and the fade. Mixing an opacity fade with
+   frosted-glass blur inside 3D layers can leave cards blank on some phone GPUs. */
+@media (hover: none) {
+  .rd-tilt, .rd-z1, .rd-z2, .rd-z3, .rd-product-main { transform: none; transform-style: flat; }
+  .rd-product::before, .rd-glassy::before { transform: none; }
+  .rd-js .rd-reveal { opacity: 1; transform: translateY(28px); transition: transform .8s cubic-bezier(.2, .75, .2, 1) var(--d, 0ms); }
+  .rd-js .rd-reveal.is-in { transform: none; }
+}
+
 /* ---------- Tilted tool marquee ---------- */
 .rd-marquee { position: relative; z-index: 1; padding-block: clamp(24px, 4vw, 48px); perspective: 900px; overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
@@ -552,6 +561,43 @@
 .rd-filter-count { font: 500 11px/1 var(--rd-font-mono); opacity: .7; font-variant-numeric: tabular-nums; }
 .rd-results { margin: 0 0 24px; font-size: 14px; color: var(--rd-faint); }
 .rd-results strong { color: var(--rd-text); font-weight: 500; }
+
+/* ---------- Loading screen ---------- */
+.rd-splash {
+  position: fixed; inset: 0; z-index: 9999; display: grid; place-content: center; justify-items: center; gap: 22px;
+  background: radial-gradient(60% 50% at 50% 45%, var(--rd-sky-aura), transparent 70%), var(--rd-ink);
+  color: var(--rd-text); font-family: var(--rd-font-body);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.rd-splash.is-leaving { opacity: 0; transform: scale(1.04); pointer-events: none; }
+.rd-splash-glow {
+  position: absolute; width: 220px; height: 220px; left: 50%; top: 50%; margin: -150px 0 0 -110px; border-radius: 50%;
+  background: radial-gradient(circle, var(--rd-sky-glow), transparent 65%); filter: blur(10px);
+  animation: rd-splash-pulse 1.9s ease-in-out infinite;
+}
+.rd-splash-mark { position: relative; width: 44px; height: 76px; overflow: visible; filter: drop-shadow(0 0 22px var(--rd-sky-glow)); }
+.rd-splash-blade { animation: rd-blade-top 1.1s cubic-bezier(.65, 0, .35, 1) .15s both; }
+.rd-splash-blade.is-bottom { animation-name: rd-blade-bottom; }
+@keyframes rd-blade-top { from { transform: translate(0, -9px); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+@keyframes rd-blade-bottom { from { transform: translate(0, 9px); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+.rd-splash-ring {
+  position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -98px 0 0 -60px; border-radius: 50%;
+  border: 1px solid var(--rd-sky-line); opacity: 0; animation: rd-splash-ring 1.2s ease-out 1.2s both;
+}
+@keyframes rd-splash-ring { from { transform: scale(.5); opacity: .9; } to { transform: scale(1.8); opacity: 0; } }
+@keyframes rd-splash-pulse { 0%, 100% { opacity: .55; transform: scale(.95); } 50% { opacity: 1; transform: scale(1.05); } }
+.rd-splash-name { position: relative; margin: 0; font: 500 12px/1 var(--rd-font-mono); letter-spacing: .32em; text-transform: uppercase; color: var(--rd-muted); }
+.rd-splash-bar { position: relative; width: 140px; height: 2px; border-radius: 2px; background: var(--rd-line); overflow: hidden; }
+.rd-splash-bar span {
+  position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--rd-sky), var(--rd-sky-ice)); box-shadow: 0 0 10px var(--rd-sky-glow);
+  animation: rd-splash-fill 1.8s cubic-bezier(.4, 0, .2, 1) forwards;
+}
+@keyframes rd-splash-fill { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .rd-splash *, .rd-splash { animation: none !important; transition-duration: .001ms !important; }
+  .rd-splash-bar span { transform: scaleX(1); }
+}
 
 /* ---------- Footer ---------- */
 .rd-footer { padding-block: 8px 40px; }
