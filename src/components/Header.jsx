@@ -1,94 +1,196 @@
-import React, { useState } from 'react'
-import Navbar from './Navbar'
-import { Link } from 'react-router-dom'
-import { PuffLoader } from "react-spinners";
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useLenis } from 'lenis/react'
+import clsx from 'clsx'
+import LogoMark from './LogoMark'
+import HashLink from './HashLink'
+import Button from './Button'
+import ThemeToggle from './ThemeToggle'
+import useHashNav from '../hooks/useHashNav'
+import { EMAIL, socials } from '../utils/profile'
 
-export default function Header({ onLoginRegisterClick, userData, onLogout, isLoading }) {
-    const [navOpen, setNavOpen] = useState(false);
-    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+const navItems = [
+    { label: 'Apps', id: 'apps' },
+    { label: 'Work', id: 'work' },
+    { label: 'About', id: 'about' },
+    { label: 'Awards', id: 'recognition' },
+    { label: 'Contact', id: 'contact' }
+];
+
+export default function Header() {
+    const { pathname } = useLocation()
+    const lenis = useLenis()
+    const [menuOpen, setMenuOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
+    const [hidden, setHidden] = useState(false)
+    const [activeId, setActiveId] = useState(null)
+    const activeRef = useRef(null)
+    const pillRef = useRef(null)
+    const linkRefs = useRef({})
+    const menuBtnRef = useRef(null)
+
+    const closeMenu = useCallback(() => setMenuOpen(false), [])
+    const go = useHashNav(closeMenu)
+
+    // glass once the page moves; hide while scrolling down, come back on the way up
+    useEffect(() => {
+        let lastY = window.scrollY
+        let travel = 0
+        const handleScroll = () => {
+            const y = window.scrollY
+            const delta = y - lastY
+            lastY = y
+            travel = Math.sign(delta) === Math.sign(travel) ? travel + delta : delta
+            setScrolled(y > 10)
+            if (y < 160 || travel < -24) setHidden(false)
+            else if (travel > 40) setHidden(true)
+        }
+        handleScroll()
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    // highlight the section in the middle of the screen
+    useEffect(() => {
+        setActiveId(null)
+        const sections = document.querySelectorAll('main section[id]')
+        if (!sections.length) return
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) setActiveId(entry.target.id)
+            })
+        }, { rootMargin: '-45% 0px -50% 0px' })
+        sections.forEach((section) => observer.observe(section))
+        return () => observer.disconnect()
+    }, [pathname])
+
+    // the pill behind the links follows the hovered link, then settles on the active one
+    const movePill = useCallback((id) => {
+        const pill = pillRef.current
+        const link = id && linkRefs.current[id]
+        if (!pill) return
+        if (!link) {
+            pill.style.setProperty('--po', '0')
+            return
+        }
+        pill.style.setProperty('--px', `${link.offsetLeft}px`)
+        pill.style.setProperty('--pw', `${link.offsetWidth}px`)
+        pill.style.setProperty('--po', '1')
+    }, [])
+
+    useEffect(() => {
+        activeRef.current = activeId
+        movePill(activeId)
+    }, [activeId, movePill])
+
+    useEffect(() => {
+        const reset = () => movePill(activeRef.current)
+        window.addEventListener('resize', reset)
+        document.fonts?.ready.then(reset)
+        return () => window.removeEventListener('resize', reset)
+    }, [movePill])
+
+    // mobile menu: freeze the page behind it, close on Escape, on navigation and on wide screens
+    useEffect(() => {
+        document.documentElement.classList.toggle('menu-open', menuOpen)
+        if (menuOpen) lenis?.stop()
+        else lenis?.start()
+    }, [menuOpen, lenis])
+
+    useEffect(() => {
+        setMenuOpen(false)
+    }, [pathname])
+
+    useEffect(() => {
+        if (!menuOpen) return
+        const handleKey = (event) => {
+            if (event.key === 'Escape') {
+                setMenuOpen(false)
+                menuBtnRef.current?.focus()
+            }
+        }
+        const wide = window.matchMedia('(min-width: 900px)')
+        const handleWide = (event) => {
+            if (event.matches) setMenuOpen(false)
+        }
+        window.addEventListener('keydown', handleKey)
+        wide.addEventListener('change', handleWide)
+        return () => {
+            window.removeEventListener('keydown', handleKey)
+            wide.removeEventListener('change', handleWide)
+        }
+    }, [menuOpen])
 
     return (
-        <header className="fixed top-0 left-0 w-full h-20 flex items-center z-40 bg-gradient-to-b from-zinc-900 to-zinc-900/0">
-            <div className="max-w-screen-2xl w-full mx-auto px-4 flex justify-between items-center md:px-6 md:grid-cols md:grid-cols-[1fr, 3fr, 1fr]">
-                <h1>
-                    <Link to="/" className='logo'>
-                        <img
-                            src="/images/logo.svg"
-                            width={40}
-                            height={40}
-                            alt="Priyank Raychura" />
-                    </Link>
-                </h1>
-                <div className="relative md:justify-self-center">
-                    <button
-                        className='menu-btn md:hidden'
-                        onClick={() => setNavOpen((prev) => !prev)}
-                    >
-                        <span className='material-symbols-rounded'>
-                            {navOpen ? 'close' : 'menu'}
-                        </span>
-                    </button>
+        <>
+            <header
+                id="nav"
+                className={clsx('nav', scrolled && 'is-scrolled', hidden && !menuOpen && 'is-hidden')}
+                onFocus={() => setHidden(false)}
+            >
+                <div className="wrap nav-in">
+                    <HashLink to="top" className="brand" aria-label="Priyank Raychura, home" onNavigate={closeMenu}>
+                        <LogoMark />
+                        <span className="brand-name">Priyank Raychura</span>
+                    </HashLink>
 
-                    <Navbar navOpen={navOpen} onLoginRegisterClick={onLoginRegisterClick} userData={userData} onLogout={onLogout} />
-                </div>
-
-                <div className="relative md:justify-self-end max-md:hidden">
-                    {isLoading ? (
-                        <div className="w-9 h-9 flex items-center justify-center">
-                            <PuffLoader
-                                color="white"
-                                loading={true}
-                                size={36}
-                                aria-label="Loading Spinner"
-                                data-testid="loader"
-                            />
-                        </div>
-                    ) : userData && userData.profileImg ? (
-                        <div>
-                            <button
-                                onClick={() => setIsProfileMenuOpen(prev => !prev)}
-                                className="img-box w-9 h-9 rounded-xl overflow-hidden cursor-pointer"
+                    <nav className="nav-links" aria-label="Sections" onPointerLeave={() => movePill(activeRef.current)}>
+                        <span className="nav-pill" ref={pillRef} aria-hidden="true"></span>
+                        {navItems.map(({ label, id }) => (
+                            <a
+                                key={id}
+                                href={`/#${id}`}
+                                ref={(el) => { linkRefs.current[id] = el }}
+                                className={clsx(activeId === id && 'is-active')}
+                                aria-current={activeId === id ? 'true' : undefined}
+                                onClick={go(id)}
+                                onPointerEnter={() => movePill(id)}
                             >
-                                <img
-                                    src={userData.profileImg}
-                                    alt={userData.name}
-                                    width={40}
-                                    height={40}
-                                    className='img-cover'
-                                    referrerPolicy='no-referrer'
-                                />
-                            </button>
+                                {label}
+                            </a>
+                        ))}
+                    </nav>
 
-                            {isProfileMenuOpen && (
-                                <div className="absolute top-full right-0 mt-2 w-60 bg-zinc-800 rounded-xl shadow-lg ring-1 ring-zinc-50/5 p-4 z-50">
-                                    <div className="flex items-center gap-3 pb-3 mb-3 border-b border-b-zinc-700">
-                                        <div>
-                                            <p className="font-semibold text-white">{userData.name}</p>
-                                            <p className="text-sm text-zinc-400">{userData.email}</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={onLogout}
-                                        className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-red-700/10 rounded-md flex items-center gap-2"
-                                    >
-                                        <span className="material-symbols-rounded">logout</span>
-                                        Logout
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
+                    <div className="nav-actions">
+                        <ThemeToggle />
+                        <Button label="Let's talk" hash="contact" variant="fill" size="sm" className="btn-talk" magnetic />
                         <button
-                            onClick={onLoginRegisterClick}
-                            className='btn btn-secondary max-md:hidden'
+                            ref={menuBtnRef}
+                            type="button"
+                            className="icon-btn menu-btn"
+                            aria-expanded={menuOpen}
+                            aria-controls="menu"
+                            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                            onClick={() => setMenuOpen((open) => !open)}
                         >
-                            Login
+                            <span></span>
+                            <span></span>
                         </button>
-                    )}
+                    </div>
                 </div>
+            </header>
 
+            <div className={clsx('menu', menuOpen && 'is-open')} id="menu" inert={!menuOpen} aria-hidden={!menuOpen}>
+                <ul className="menu-links">
+                    {navItems.map(({ label, id }, key) => (
+                        <li key={id}>
+                            <a href={`/#${id}`} style={{ '--i': key }} onClick={go(id)}>
+                                <span>{label}</span>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
 
+                <div className="menu-foot">
+                    <span className="eyebrow">Say hello</span>
+                    <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+                    <div className="menu-socials">
+                        {socials.slice(0, 4).map(({ label, href }) => (
+                            <a key={label} href={href} target="_blank" rel="noreferrer">{label}</a>
+                        ))}
+                    </div>
+                </div>
             </div>
-        </header>
+        </>
     )
 }

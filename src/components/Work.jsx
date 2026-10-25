@@ -1,42 +1,26 @@
 import React from 'react'
-import ProjectCard from './ProjectCard';
-import { Link } from 'react-router-dom';
-import { works } from '../utils/works';
+import SectionHead from './SectionHead'
+import Gallery from './Gallery'
+import ProjectArchive from './ProjectArchive'
+import { works } from '../utils/works'
 
 const Work = () => {
     return (
-        <section
-            id='work'
-            className="section"
-        >
-            <div className="container">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="headline-2 reveal-up">
-                        My portfolio highlights
-                    </h2>
-
-                    <h3 className="text-sky-400 font-semibold md:text-lg">
-                        <Link to={'/all-projects'}>View all</Link>
-                    </h3>
-                </div>
-
-                <div className="grid gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-                    {
-                        works?.slice(0, 6)?.map(({ imgSrc, title, tags, projectLink, githubLink }, key) => (
-                            <ProjectCard
-                                key={key}
-                                imgSrc={imgSrc}
-                                title={title}
-                                tags={tags}
-                                projectLink={projectLink}
-                                githubLink={githubLink}
-                                classes="reveal-up"
-                            />
-                        ))
-                    }
-                </div>
+        <section className="section" id="work" aria-labelledby="work-title">
+            <div className="wrap">
+                <SectionHead
+                    id="work-title"
+                    label="Web"
+                    count={`${works.length} projects`}
+                    title="Websites, from landing pages to full-stack apps."
+                    lede="Built with React, Django, JavaScript, Bootstrap and plain CSS. Six favourites first, then everything else."
+                />
             </div>
+
+            <Gallery />
+            <ProjectArchive id="archive" limit={10} />
         </section>
     )
 }
+
 export default Work

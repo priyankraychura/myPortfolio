@@ -1,64 +1,127 @@
-import React from 'react'
-import { ButtonOutline, ButtonPrimary } from './Button'
+import React, { useEffect, useRef } from 'react'
+import Button from './Button'
+import Cipher from './Cipher'
+import CountUp from './CountUp'
+import HashLink from './HashLink'
+import LocalTime from './LocalTime'
+import { ArrowDown, ArrowRight, ArrowUpRight } from './icons'
+import { apps, works } from '../utils/works'
+import { CV_URL } from '../utils/profile'
+import { finePointer, motion } from '../utils/motion'
+
+// headline words, each with its own delay in the intro (ms)
+const lineOne = ['Websites', 'that', 'feel', 'fast.'];
+const lineTwo = ['Apps', 'that', 'keep'];
+
+const stats = [
+    { label: 'Web projects', value: works.length },
+    { label: 'Apps built', value: apps.length },
+    { label: 'Awards in 2025', value: 4 },
+    { label: 'Years of coding', value: 4, plus: true }
+];
 
 export default function Hero() {
-    return (
-        <section
-            id='home'
-            className='pt-28 lg:pt-36'
-        >
-            <div className="container  items-center lg:grid lg:grid-cols-2 lg:gap-10">
-                <div>
-                    <div className="flex items-center gap-3">
-                        <figure className='img-box w-9 h-9 rounded-lg'>
-                            <img
-                                src="/images/avatar-1.jpg"
-                                alt="Priyank Raychura"
-                                width={40}
-                                height={40}
-                                className='img-cover' />
-                        </figure>
+    const heroRef = useRef(null)
+    const gridRef = useRef(null)
 
-                        <div className="flex items-center gap-1.5 text-zinc-400 text-sm tracking-wide">
-                            <span className="relative w-2 h-2 rounded-full bg-emerald-400">
-                                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping"></span>
-                            </span>
-                            Available for work
+    // brighter dots follow the cursor across the grid
+    useEffect(() => {
+        if (!motion || !finePointer) return
+        const hero = heroRef.current
+        const grid = gridRef.current
+        let frame = 0
+        let x = 0
+        let y = 0
+        const handleMove = (event) => {
+            const rect = hero.getBoundingClientRect()
+            x = event.clientX - rect.left
+            y = event.clientY - rect.top
+            if (!frame) {
+                frame = requestAnimationFrame(() => {
+                    grid.style.setProperty('--mx', `${x}px`)
+                    grid.style.setProperty('--my', `${y}px`)
+                    frame = 0
+                })
+            }
+        }
+        const handleLeave = () => {
+            grid.style.setProperty('--mx', '-999px')
+            grid.style.setProperty('--my', '-999px')
+        }
+        hero.addEventListener('pointermove', handleMove)
+        hero.addEventListener('pointerleave', handleLeave)
+        return () => {
+            cancelAnimationFrame(frame)
+            hero.removeEventListener('pointermove', handleMove)
+            hero.removeEventListener('pointerleave', handleLeave)
+        }
+    }, [])
+
+    return (
+        <section className="hero" id="top" aria-label="Introduction" ref={heroRef}>
+            <div className="hero-bg" ref={gridRef} aria-hidden="true"></div>
+
+            <div className="wrap">
+                <div className="hero-top">
+                    <p className="status" data-intro style={{ '--d': 60 }}>
+                        <img src="/images/avatar-1-sm.webp" alt="" width="30" height="30" />
+                        <span className="dot-live" aria-hidden="true"></span>
+                        <b>Available for work</b>
+                        <span className="sep where" aria-hidden="true">·</span>
+                        <span className="where">Rajkot, India</span>
+                        <LocalTime separator={<span className="sep" aria-hidden="true">·</span>} />
+                    </p>
+
+                    <HashLink to="airkey" className="latest" data-intro style={{ '--d': 140 }}>
+                        <span className="badge now">Latest</span>
+                        AirKey for Windows and Android
+                        <ArrowRight />
+                    </HashLink>
+                </div>
+
+                <h1 className="hero-title">
+                    <span className="sr-only">Websites that feel fast. Apps that keep secrets.</span>
+                    <span aria-hidden="true">
+                        <span className="ht-line">
+                            {lineOne.map((word, key) => (
+                                <React.Fragment key={word}>
+                                    <span className="w"><span style={{ '--d': 140 + key * 50 }}>{word}</span></span>{' '}
+                                </React.Fragment>
+                            ))}
+                        </span>
+                        <span className="ht-line">
+                            {lineTwo.map((word, key) => (
+                                <React.Fragment key={word}>
+                                    <span className="w"><span style={{ '--d': 380 + key * 50 }}>{word}</span></span>{' '}
+                                </React.Fragment>
+                            ))}
+                            <span className="w"><span style={{ '--d': 530 }}><Cipher text="secrets" />.</span></span>
+                        </span>
+                    </span>
+                </h1>
+
+                <div className="hero-foot">
+                    <div>
+                        <p className="lede" data-intro style={{ '--d': 620 }}>
+                            I&apos;m <strong>Priyank Raychura</strong>, a full-stack developer from Rajkot, India. I build websites with React and Node.js, and private, secure apps for Windows and Android with Flutter, Rust and React Native.
+                        </p>
+                        <div className="cta-row" data-intro style={{ '--d': 720 }}>
+                            <Button label="See my work" hash="apps" variant="fill" iconAfter={<ArrowDown className="i-down" />} magnetic />
+                            <Button label="Download CV" href={CV_URL} iconAfter={<ArrowUpRight className="i-ne" />} magnetic />
                         </div>
                     </div>
 
-                    <h2 className='headline-1 max-w-[15ch] sm:max-w-[20ch] lg:max-w-[15ch] mt-5 mb-8 lg:mb-10'>
-                        Building Scalable Modern Websites for the Future
-                    </h2>
-
-                    <div className="flex items-center gap-3">
-                        <ButtonPrimary
-                            label="Download CV"
-                            icon="download"
-                            // href="https://drive.google.com/uc?export=download&id=1vYR9LJQmxvr5v9_7WwG5JWlYT5mx5nWI"
-                            href="https://drive.google.com/file/d/1vYR9LJQmxvr5v9_7WwG5JWlYT5mx5nWI/preview"
-                            target='_blank'
-                        />
-
-                        <ButtonOutline 
-                            href="#about"
-                            label="Scroll down"
-                            icon="arrow_downward"
-                        />
-                    </div>
-
-                </div>
-
-                <div className="hidden lg:block">
-                    <figure className="w-full max-w-[480px] ml-auto bg-gradient-to-t from-sky-400 via-25% via-sky-400/40 to-65% rounded-[60px] overflow-hidden">
-                        <img
-                            src="./images/hero-banner4.png"
-                            width={656}
-                            height={800}
-                            alt="Henry Clark"
-                            className="w-full"
-                        />
-                    </figure>
+                    <dl className="stats" data-intro style={{ '--d': 820 }}>
+                        {stats.map(({ label, value, plus }, key) => (
+                            <div className="stat" key={label}>
+                                <dt>{label}</dt>
+                                <dd>
+                                    <CountUp value={value} delay={key * 90} />
+                                    {plus && <span className="plus">+</span>}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
                 </div>
             </div>
         </section>

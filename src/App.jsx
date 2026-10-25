@@ -1,77 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import HomePage from './pages/HomePage'
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import Routes from './routes/AllRoutes'
-import Header from './components/Header'
+import ThemeProvider from './components/ThemeProvider'
+import SmoothScroll from './components/SmoothScroll'
 import ScrollToTop from './components/ScrollToTop'
-import { ReactLenis } from 'lenis/react'
-import LoginRegisterPopup from './components/LoginRegisterPopup'
-import { onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
-import { auth, db } from './config/firebaseConfig'
-import toast from 'react-hot-toast';
-import Todos from './test/Todos'
-import AddTodo from './test/AddTodo'
-import SplashScreen from './components/SplashScreen'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import BackToTop from './components/BackToTop'
+// keeps Firebase Analytics running now that the sign-in UI is gone
+import './config/firebaseConfig'
 
 export default function App() {
-  const [uid, setUid] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUid(user.uid);
-      } else {
-        setUid(null);
-      }
-    })
-  }, [])
-
-  useEffect(() => {
-    setIsLoading(true);
-    if (uid) {
-      fetchUser();
-    } else {
-      setUserData(null);
-      setIsLoading(false);
-    }
-  }, [uid])
-
-  const fetchUser = async () => {
-    try {
-      const res = await getDoc(doc(db, 'users', uid));
-      setUserData(res.data());
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const handleLogout = async () => {
-    await auth.signOut();
-    setUserData(null)
-    toast.success('Logged out successfully!')
-  }
-
   return (
     <BrowserRouter>
-      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
-      <ReactLenis root>
-        <ScrollToTop />
-        <Header onLoginRegisterClick={() => setIsPopupOpen(true)} userData={userData} onLogout={handleLogout} isLoading={isLoading} />
-        <Routes />
-        <LoginRegisterPopup
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-        />
-      </ReactLenis>
-      {/* <AddTodo /> */}
-      {/* <Todos /> */}
+      <ThemeProvider>
+        <SmoothScroll>
+          <ScrollToTop />
+          <a className="skip" href="#main">Skip to content</a>
+          <div className="ambient" aria-hidden="true"><i></i><i></i></div>
+          <div className="grain" aria-hidden="true"></div>
+          <Header />
+          <Routes />
+          <Footer />
+          <BackToTop />
+        </SmoothScroll>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

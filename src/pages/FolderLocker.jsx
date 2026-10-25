@@ -1,50 +1,57 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
+import { useLenis } from 'lenis/react'
+import Button from '../components/Button'
+import CloakWindow from '../components/CloakWindow'
+import { SplitWords } from '../components/SplitText'
+import { Ban, Close, Code, Download, Drive, FolderOpen, Key, Lock, Shield } from '../components/icons'
+import useReveal from '../hooks/useReveal'
+import useHashScroll from '../hooks/useHashScroll'
+import { CLOAK_RELEASES, CLOAK_REPO } from '../utils/works'
 
-const REPO_URL = 'https://github.com/priyankraychura/desktop_folder_locker'
-const RELEASES_URL = `${REPO_URL}/releases/latest`
-const CI_BUILDS_URL = `${REPO_URL}/actions/workflows/ci.yml?query=is%3Asuccess`
+const CI_BUILDS_URL = `${CLOAK_REPO}/actions/workflows/ci.yml?query=is%3Asuccess`
 
 const features = [
   {
-    icon: 'lock',
+    icon: Lock,
     title: 'Real encryption',
     text: 'Turns a folder or file into a single .flk vault using XChaCha20-Poly1305 and Argon2id from libsodium.',
   },
   {
-    icon: 'hard_drive',
+    icon: Drive,
     title: 'Open as a drive',
     text: 'An encrypted folder can open as a drive such as V:. Files are decrypted in memory only, never written to disk.',
   },
   {
-    icon: 'block',
+    icon: Ban,
     title: 'Block, read-only or hide',
     text: 'Instantly block access or make items read-only, even for huge folders, and hide them from Explorer.',
   },
   {
-    icon: 'key',
+    icon: Key,
     title: 'Passwords & recovery key',
     text: 'One master password for everything or a password per item, plus a recovery key shown once at setup.',
   },
   {
-    icon: 'folder_open',
+    icon: FolderOpen,
     title: 'Explorer integration',
     text: 'Vaults get a lock icon, double-click asks for the password, and the right-click menu locks or unlocks items.',
   },
   {
-    icon: 'shield',
+    icon: Shield,
     title: 'Crash-safe & private',
     text: 'Every vault is verified before originals are deleted. No account, no cloud and no telemetry.',
   },
 ]
 
 const screenshots = [
-  { src: '/apps/folder-locker/05_items.png', label: 'Protected items' },
-  { src: '/apps/folder-locker/06_protect_dialog.png', label: 'Protect dialog' },
-  { src: '/apps/folder-locker/07_protect_dialog_drive.png', label: 'Open as a drive' },
-  { src: '/apps/folder-locker/08_unlock_dialog.png', label: 'Unlock dialog' },
-  { src: '/apps/folder-locker/09_settings.png', label: 'Settings' },
-  { src: '/apps/folder-locker/11_items_dark.png', label: 'Dark mode' },
+  { src: '/apps/folder-locker/05_items.webp', label: 'Protected items' },
+  { src: '/apps/folder-locker/06_protect_dialog.webp', label: 'Protect dialog' },
+  { src: '/apps/folder-locker/07_protect_dialog_drive.webp', label: 'Open as a drive' },
+  { src: '/apps/folder-locker/08_unlock_dialog.webp', label: 'Unlock dialog' },
+  { src: '/apps/folder-locker/09_settings.webp', label: 'Settings' },
+  { src: '/apps/folder-locker/11_items_dark.webp', label: 'Dark mode' },
 ]
 
 const steps = [
@@ -55,168 +62,208 @@ const steps = [
 ]
 
 const FolderLocker = () => {
+  const container = useRef(null)
+  const closeRef = useRef(null)
   const [preview, setPreview] = useState(null)
+  const lenis = useLenis()
+
+  useReveal(container)
+  useHashScroll()
 
   useEffect(() => {
     document.title = 'Cloak - Lock & Encrypt Folders | Priyank Raychura'
   }, [])
 
+  // the page glows in Cloak's violet
+  useEffect(() => {
+    const root = document.documentElement
+    root.style.setProperty('--amb', '#7B61FF')
+    root.style.setProperty('--amb-2', '#6C8CFF')
+    return () => {
+      root.style.removeProperty('--amb')
+      root.style.removeProperty('--amb-2')
+    }
+  }, [])
+
+  // screenshot viewer: freeze the page, close on Escape
+  useEffect(() => {
+    if (!preview) return
+    lenis?.stop()
+    closeRef.current?.focus()
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setPreview(null)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      lenis?.start()
+      window.removeEventListener('keydown', handleKey)
+    }
+  }, [preview, lenis])
+
   return (
-    <section className="section pb-20">
-      <div className="container">
-        {/* Hero */}
-        <div className="flex flex-col items-center text-center gap-5 mb-16 pt-6">
-          <img
-            src="/appIcons/folder-locker.png"
-            alt="Cloak icon"
-            width={96}
-            height={96}
-            className="w-24 h-24"
-          />
-          <div>
-            <h1 className="headline-1 mx-auto">Cloak</h1>
-            <p className="title-1 text-zinc-300 mt-1">Lock &amp; Encrypt Folders</p>
-          </div>
-          <p className="text-zinc-400 max-w-xl text-lg">
-            Lock, encrypt and hide folders on Windows. Free, open source and private,
-            built with Flutter and Rust.
-          </p>
+    <main id="main" ref={container}>
+      <section className="section page-top" aria-labelledby="cloak-title">
+        <div className="wrap">
+          {/* Hero */}
+          <div className="cloak-hero">
+            <div>
+              <img className="app-icon" src="/appIcons/cloak.webp" alt="Cloak icon" width="76" height="76" data-reveal />
+              <h1 className="page-title" id="cloak-title" data-split><SplitWords text="Cloak" /></h1>
+              <p className="app-sub" data-reveal>Lock &amp; Encrypt Folders</p>
+              <p className="page-lede" data-reveal>
+                Lock, encrypt and hide folders on Windows. Free, open source and private,
+                built with Flutter and Rust.
+              </p>
 
-          <div className="flex flex-wrap justify-center gap-2">
-            {['Windows 10 / 11', 'Flutter', 'Rust', 'libsodium', 'GPL-3.0'].map((tag) => (
-              <span key={tag} className="text-xs text-zinc-400 bg-zinc-50/10 px-2 py-0.5 rounded">
-                {tag}
-              </span>
-            ))}
-          </div>
+              <div className="tags" data-reveal>
+                {['Windows 10 / 11', 'Flutter', 'Rust', 'libsodium', 'GPL-3.0'].map((tag) => (
+                  <span key={tag} className="tag">{tag}</span>
+                ))}
+              </div>
 
-          <div className="flex flex-wrap justify-center gap-3 mt-2">
-            <a href={RELEASES_URL} target="_blank" rel="noreferrer" className="btn btn-primary">
-              Download for Windows
-              <span className="material-symbols-rounded" aria-hidden="true">download</span>
-            </a>
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="btn btn-outline">
-              View on GitHub
-              <span className="material-symbols-rounded" aria-hidden="true">code</span>
-            </a>
-          </div>
+              <div className="cta-row" data-reveal>
+                <Button label="Download for Windows" href={CLOAK_RELEASES} variant="fill" icon={<Download />} magnetic />
+                <Button label="View on GitHub" href={CLOAK_REPO} icon={<Code />} magnetic />
+              </div>
 
-          <p className="text-sm text-zinc-500">
-            No release yet? Grab the <strong className="text-zinc-400">folder-locker-setup</strong> artifact
-            from the{' '}
-            <a href={CI_BUILDS_URL} target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">
-              latest successful CI build
-            </a>.
-          </p>
-        </div>
-
-        {/* Features */}
-        <h2 className="headline-2 mb-8">Features</h2>
-        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16">
-          {features.map(({ icon, title, text }) => (
-            <div key={title} className="p-5 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5">
-              <span className="material-symbols-rounded text-sky-400 text-3xl mb-3 block">{icon}</span>
-              <h3 className="text-base font-medium text-zinc-200 mb-1">{title}</h3>
-              <p className="text-sm text-zinc-400">{text}</p>
+              <p className="cloak-note" data-reveal>
+                No release yet? Grab the <strong>folder-locker-setup</strong> artifact
+                from the{' '}
+                <a href={CI_BUILDS_URL} target="_blank" rel="noreferrer" className="inline-link">
+                  latest successful CI build
+                </a>.
+              </p>
             </div>
-          ))}
-        </div>
 
-        {/* Screenshots */}
-        <h2 className="headline-2 mb-8">Screenshots</h2>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16">
-          {screenshots.map(({ src, label }) => (
-            <button
-              key={src}
-              onClick={() => setPreview({ src, label })}
-              className="text-left rounded-xl bg-zinc-800 p-2 ring-1 ring-inset ring-zinc-50/5 hover:bg-zinc-700/50 transition-colors"
-            >
-              <figure className="img-box rounded-lg aspect-[16/10]">
-                <img src={src} alt={label} loading="lazy" className="img-cover" />
-              </figure>
-              <p className="text-sm text-zinc-400 mt-2 px-1">{label}</p>
-            </button>
-          ))}
-        </div>
+            <div className="cloak-visual">
+              <CloakWindow />
+            </div>
+          </div>
 
-        {/* Install */}
-        <h2 className="headline-2 mb-8">How to install</h2>
-        <ol className="space-y-3 mb-16">
-          {steps.map((step, i) => (
-            <li key={i} className="flex gap-4 p-4 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5">
-              <span className="w-8 h-8 shrink-0 rounded-lg grid place-items-center bg-sky-400/10 text-sky-400 font-semibold">
-                {i + 1}
-              </span>
-              <p className="text-zinc-300 self-center">{step}</p>
-            </li>
-          ))}
-        </ol>
+          {/* Features */}
+          <section className="block" aria-labelledby="features-title">
+            <span className="eyebrow" data-reveal>What it does</span>
+            <h2 className="block-title" id="features-title" data-split><SplitWords text="Features" /></h2>
+            <div className="features">
+              {features.map((feature) => {
+                const Icon = feature.icon
+                return (
+                  <div key={feature.title} className="feature" data-reveal>
+                    <span className="feature-ico"><Icon /></span>
+                    <h3>{feature.title}</h3>
+                    <p>{feature.text}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
 
-        {/* Notes */}
-        <div className="p-5 rounded-xl bg-amber-400/5 ring-1 ring-inset ring-amber-400/20 text-sm text-zinc-300 space-y-2">
-          <p className="font-medium text-amber-300">Good to know</p>
-          <p>There is no back door: if you forget your password and lose your recovery key, nobody can recover the data.</p>
-          <p>
-            Opening vaults as drives needs the free{' '}
-            <a href="https://github.com/dokan-dev/dokany" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">
-              Dokany
-            </a>{' '}
-            driver. The installer can install it for you.
-          </p>
-        </div>
+          {/* Screenshots */}
+          <section className="block" aria-labelledby="screenshots-title">
+            <span className="eyebrow" data-reveal>A look inside</span>
+            <h2 className="block-title" id="screenshots-title" data-split><SplitWords text="Screenshots" /></h2>
+            <div className="shots">
+              {screenshots.map(({ src, label }) => (
+                <button key={src} type="button" className="shot" onClick={() => setPreview({ src, label })} data-reveal>
+                  <span className="shot-img">
+                    <img src={src} alt={label} loading="lazy" width="1280" height="800" />
+                  </span>
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+          </section>
 
-        {/* Code signing policy */}
-        <h2 id="code-signing" className="headline-2 mt-16 mb-8">Code signing policy</h2>
-        <div className="p-5 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5 text-sm text-zinc-300 space-y-3">
-          <p>
-            Free code signing provided by{' '}
-            <a href="https://about.signpath.io" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">SignPath.io</a>,
-            certificate by{' '}
-            <a href="https://signpath.org" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">SignPath Foundation</a>.
-          </p>
-          <p>
-            Only files built from the public{' '}
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">source code</a>{' '}
-            by GitHub Actions are signed.
-          </p>
-          <p>
-            <span className="text-zinc-200">Committers and reviewers:</span>{' '}
-            <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">Priyank Raychura</a>
-            <br />
-            <span className="text-zinc-200">Approvers:</span>{' '}
-            <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">Priyank Raychura</a>
-          </p>
-        </div>
+          {/* Install */}
+          <section className="block" aria-labelledby="install-title">
+            <span className="eyebrow" data-reveal>Get started</span>
+            <h2 className="block-title" id="install-title" data-split><SplitWords text="How to install" /></h2>
+            <ol className="steps">
+              {steps.map((step) => (
+                <li key={step} className="step" data-reveal>
+                  <p>{step}</p>
+                </li>
+              ))}
+            </ol>
 
-        {/* Privacy policy */}
-        <h2 id="privacy" className="headline-2 mt-16 mb-8">Privacy policy</h2>
-        <div className="p-5 rounded-xl bg-zinc-800 ring-1 ring-inset ring-zinc-50/5 text-sm text-zinc-300 space-y-3">
-          <p>
-            This program will not transfer any information to other networked systems unless
-            specifically requested by the user or the person installing or operating it.
-          </p>
-          <p>
-            Cloak has no account, no cloud and no telemetry. Your passwords, recovery key and files
-            stay on your PC. It never connects to the internet by itself: links, such as the Dokany
-            download page, open in your browser only when you click them.
-          </p>
-          <p>
-            <Link to="/privacy-policy/cloak" className="text-sky-400 hover:underline">
-              Read the full privacy policy
-            </Link>
-          </p>
-        </div>
-      </div>
+            {/* Notes */}
+            <div className="note" data-reveal>
+              <p className="note-title">Good to know</p>
+              <p>There is no back door: if you forget your password and lose your recovery key, nobody can recover the data.</p>
+              <p>
+                Opening vaults as drives needs the free{' '}
+                <a href="https://github.com/dokan-dev/dokany" target="_blank" rel="noreferrer" className="inline-link">
+                  Dokany
+                </a>{' '}
+                driver. The installer can install it for you.
+              </p>
+            </div>
+          </section>
 
-      {preview && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm grid place-items-center p-4"
-          onClick={() => setPreview(null)}
-        >
-          <img src={preview.src} alt={preview.label} className="max-w-full max-h-[90vh] rounded-lg" />
+          {/* Code signing policy */}
+          <section className="block" id="code-signing" aria-labelledby="code-signing-title">
+            <span className="eyebrow" data-reveal>Releases</span>
+            <h2 className="block-title" id="code-signing-title" data-split><SplitWords text="Code signing policy" /></h2>
+            <div className="prose-card" data-reveal>
+              <p>
+                Free code signing provided by{' '}
+                <a href="https://about.signpath.io" target="_blank" rel="noreferrer" className="inline-link">SignPath.io</a>,
+                certificate by{' '}
+                <a href="https://signpath.org" target="_blank" rel="noreferrer" className="inline-link">SignPath Foundation</a>.
+              </p>
+              <p>
+                Only files built from the public{' '}
+                <a href={CLOAK_REPO} target="_blank" rel="noreferrer" className="inline-link">source code</a>{' '}
+                by GitHub Actions are signed.
+              </p>
+              <p>
+                <strong>Committers and reviewers:</strong>{' '}
+                <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="inline-link">Priyank Raychura</a>
+                <br />
+                <strong>Approvers:</strong>{' '}
+                <a href="https://github.com/priyankraychura" target="_blank" rel="noreferrer" className="inline-link">Priyank Raychura</a>
+              </p>
+            </div>
+          </section>
+
+          {/* Privacy policy */}
+          <section className="block" id="privacy" aria-labelledby="privacy-title">
+            <span className="eyebrow" data-reveal>Your data</span>
+            <h2 className="block-title" id="privacy-title" data-split><SplitWords text="Privacy policy" /></h2>
+            <div className="prose-card" data-reveal>
+              <p>
+                This program will not transfer any information to other networked systems unless
+                specifically requested by the user or the person installing or operating it.
+              </p>
+              <p>
+                Cloak has no account, no cloud and no telemetry. Your passwords, recovery key and files
+                stay on your PC. It never connects to the internet by itself: links, such as the Dokany
+                download page, open in your browser only when you click them.
+              </p>
+              <p>
+                <Link to="/privacy-policy/cloak" className="inline-link">
+                  Read the full privacy policy
+                </Link>
+              </p>
+            </div>
+          </section>
         </div>
+      </section>
+
+      {/* in <body> so it covers the fixed nav and back-to-top button */}
+      {preview && createPortal(
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label={preview.label} onClick={() => setPreview(null)}>
+          <button ref={closeRef} type="button" className="icon-btn" aria-label="Close screenshot" onClick={() => setPreview(null)}>
+            <Close />
+          </button>
+          <figure onClick={(event) => event.stopPropagation()}>
+            <img src={preview.src} alt={preview.label} />
+            <figcaption>{preview.label}</figcaption>
+          </figure>
+        </div>,
+        document.body
       )}
-    </section>
+    </main>
   )
 }
 
