@@ -292,8 +292,6 @@
 .rd-z1 { transform: translateZ(18px); }
 .rd-z2 { transform: translateZ(36px); }
 .rd-z3 { transform: translateZ(56px); }
-.rd-pop { transition: transform .6s cubic-bezier(.2, .7, .2, 1), box-shadow .6s ease; }
-.rd-tilt:hover .rd-pop { transform: translateZ(46px) rotateY(-16deg) rotateX(10deg) scale(1.08); box-shadow: 18px 22px 30px -12px rgba(0, 0, 0, 0.6), 0 0 30px -6px var(--glow); }
 
 /* ---------- Frosted glass surfaces (the 3D scene blurs behind them) ---------- */
 .rd-glassy { position: relative; background: transparent; }
