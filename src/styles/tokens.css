@@ -1,0 +1,119 @@
+/* DESIGN TOKENS
+   Dark-first: the bare :root holds the dark palette. Light values apply when the
+   system prefers light (unless the visitor picked dark) or when they pick light. */
+
+:root {
+	--bg: #090A10;
+	--bg-raise: #0D0F17;
+	--surface: #11131D;
+	--surface-2: #181B28;
+	--line: rgba(160, 172, 255, 0.10);
+	--line-strong: rgba(160, 172, 255, 0.20);
+	--text: #ECEEF7;
+	--text-2: #A6ABC2;
+	--muted: #7A809C;
+	--cobalt: #6C8CFF;
+	--cobalt-fill: #3D5AFE;
+	--cobalt-soft: rgba(108, 140, 255, 0.14);
+	--on-fill: #FFFFFF;
+	--marigold: #FFB547;
+	--marigold-soft: rgba(255, 181, 71, 0.14);
+	--mint: #3DDC97;
+	--danger: #FF7A85;
+	--danger-soft: rgba(255, 122, 133, 0.12);
+	--dot: rgba(160, 172, 255, 0.16);
+	--shadow-lg: 0 40px 100px -30px rgba(0, 0, 0, 0.75);
+	--inv-light: none;
+	--grain: 0.05;
+	--amb-alpha: 30%;
+	--glow-mix: 30%;
+
+	/* product colors, taken from each app icon */
+	--c-cloak: #7B61FF;
+	--c-airkey: #2FA8FF;
+	--c-pm: #E5A93C;
+
+	--font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+	--font-body: "Instrument Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+	--gutter: clamp(16px, 4vw, 48px);
+	--nav-h: 68px;
+
+	/* ambient light, changed per section by useSectionAmbient */
+	--amb: #6C8CFF;
+	--amb-2: #FFB547;
+	color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme="dark"]) {
+		--bg: #F3F4F8;
+		--bg-raise: #EAECF3;
+		--surface: #FFFFFF;
+		--surface-2: #F5F6FB;
+		--line: rgba(22, 30, 72, 0.10);
+		--line-strong: rgba(22, 30, 72, 0.18);
+		--text: #0B0D18;
+		--text-2: #454A60;
+		--muted: #5F6479;
+		--cobalt: #2F48E6;
+		--cobalt-fill: #2F48E6;
+		--cobalt-soft: rgba(47, 72, 230, 0.09);
+		--on-fill: #FFFFFF;
+		--marigold: #A05A00;
+		--marigold-soft: rgba(224, 140, 20, 0.15);
+		--mint: #0E9F62;
+		--danger: #C42B3A;
+		--danger-soft: rgba(196, 43, 58, 0.08);
+		--dot: rgba(22, 30, 72, 0.13);
+		--shadow-lg: 0 40px 90px -36px rgba(20, 28, 70, 0.32);
+		--inv-light: invert(1);
+		--grain: 0.03;
+		--amb-alpha: 16%;
+		--glow-mix: 16%;
+		color-scheme: light;
+	}
+}
+
+:root[data-theme="light"] {
+	--bg: #F3F4F8;
+	--bg-raise: #EAECF3;
+	--surface: #FFFFFF;
+	--surface-2: #F5F6FB;
+	--line: rgba(22, 30, 72, 0.10);
+	--line-strong: rgba(22, 30, 72, 0.18);
+	--text: #0B0D18;
+	--text-2: #454A60;
+	--muted: #5F6479;
+	--cobalt: #2F48E6;
+	--cobalt-fill: #2F48E6;
+	--cobalt-soft: rgba(47, 72, 230, 0.09);
+	--on-fill: #FFFFFF;
+	--marigold: #A05A00;
+	--marigold-soft: rgba(224, 140, 20, 0.15);
+	--mint: #0E9F62;
+	--danger: #C42B3A;
+	--danger-soft: rgba(196, 43, 58, 0.08);
+	--dot: rgba(22, 30, 72, 0.13);
+	--shadow-lg: 0 40px 90px -36px rgba(20, 28, 70, 0.32);
+	--inv-light: invert(1);
+	--grain: 0.03;
+	--amb-alpha: 16%;
+	--glow-mix: 16%;
+	color-scheme: light;
+}
+
+@property --amb {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: #6C8CFF;
+}
+
+@property --amb-2 {
+	syntax: "<color>";
+	inherits: true;
+	initial-value: #FFB547;
+}

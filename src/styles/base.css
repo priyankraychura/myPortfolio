@@ -1,0 +1,91 @@
+/* BASE */
+
+:root {
+	transition: --amb 1.4s var(--ease-io), --amb-2 1.4s var(--ease-io);
+}
+
+[hidden] {
+	display: none !important;
+}
+
+html.menu-open,
+html.menu-open body {
+	overflow: hidden;
+}
+
+body {
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-body);
+	font-size: 16px;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: clip;
+}
+
+/* TYPOGRAPHY */
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-display);
+	font-weight: 760;
+	font-stretch: 112%;
+	letter-spacing: -0.03em;
+	line-height: 1.04;
+	text-wrap: balance;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+code {
+	font-family: var(--font-mono);
+	font-size: 0.86em;
+	padding: 0.1em 0.38em;
+	border-radius: 6px;
+	background: var(--cobalt-soft);
+	color: var(--text);
+}
+
+::selection {
+	background: var(--cobalt-fill);
+	color: #fff;
+}
+
+:focus-visible {
+	outline: 2px solid var(--cobalt);
+	outline-offset: 3px;
+	border-radius: 8px;
+}
+
+.skip {
+	position: fixed;
+	z-index: 100;
+	left: 16px;
+	top: 12px;
+	padding: 10px 16px;
+	border-radius: 999px;
+	background: var(--text);
+	color: var(--bg);
+	font-weight: 600;
+	transform: translateY(-180%);
+	transition: transform 0.3s var(--ease-out);
+}
+
+.skip:focus {
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}

@@ -8,26 +8,32 @@ export default {
   ],
   theme: {
     extend: {
+      // Colors resolve to the CSS variables in src/styles/tokens.css, so they follow the theme
+      colors: {
+        bg: 'var(--bg)',
+        raise: 'var(--bg-raise)',
+        surface: 'var(--surface)',
+        'surface-2': 'var(--surface-2)',
+        line: 'var(--line)',
+        'line-strong': 'var(--line-strong)',
+        fg: 'var(--text)',
+        'fg-2': 'var(--text-2)',
+        muted: 'var(--muted)',
+        cobalt: 'var(--cobalt)',
+        'cobalt-fill': 'var(--cobalt-fill)',
+        'cobalt-soft': 'var(--cobalt-soft)',
+        marigold: 'var(--marigold)',
+        'marigold-soft': 'var(--marigold-soft)',
+        mint: 'var(--mint)',
+      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Instrument Sans"', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        display: ['Archivo', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
-      keyframes: {
-        'loader-spin': {
-          to: { transform: 'rotate(360deg)' },
-        },
-        'loader-pulse': {
-          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.6', transform: 'scale(0.92)' },
-        },
-        'loader-fade-out': {
-          from: { opacity: '1' },
-          to: { opacity: '0' },
-        },
-      },
-      animation: {
-        'loader-spin': 'loader-spin 0.8s linear infinite',
-        'loader-pulse': 'loader-pulse 2s ease-in-out infinite',
-        'loader-fade-out': 'loader-fade-out 0.5s ease-out forwards',
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'in-out-strong': 'cubic-bezier(0.65, 0, 0.35, 1)',
       },
     },
   },
