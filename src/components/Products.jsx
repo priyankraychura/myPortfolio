@@ -80,7 +80,7 @@ function ProductCard({ product }) {
     const main = (
         <>
             <div className="rd-product-top rd-z1">
-                <img className="rd-app-icon rd-pop" src={icon} alt="" width="52" height="52" />
+                <img className="rd-app-icon" src={icon} alt="" width="52" height="52" />
                 <div className="rd-product-name">
                     <h3>{name}</h3>
                     <p className="rd-product-tag">{tagline}</p>
