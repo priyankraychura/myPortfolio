@@ -26,12 +26,30 @@ const SmoothScroll = ({ children }) => {
         return () => gsap.ticker.remove(update)
     }, [])
 
-    // fonts and images change the page height after the first layout
+    // fonts, images and route changes all move things after the first layout, so
+    // re-measure the scroll animations whenever the page settles at a new height
+    // (the footer persists across pages and would otherwise keep the old page's positions)
     useEffect(() => {
         const refresh = () => ScrollTrigger.refresh()
         document.fonts?.ready.then(refresh)
         window.addEventListener('load', refresh)
-        return () => window.removeEventListener('load', refresh)
+
+        let height = document.body.offsetHeight
+        let timer = 0
+        const observer = new ResizeObserver(() => {
+            const next = document.body.offsetHeight
+            if (Math.abs(next - height) < 2) return
+            height = next
+            clearTimeout(timer)
+            timer = setTimeout(refresh, 150)
+        })
+        observer.observe(document.body)
+
+        return () => {
+            window.removeEventListener('load', refresh)
+            observer.disconnect()
+            clearTimeout(timer)
+        }
     }, [])
 
     if (!motion) return children

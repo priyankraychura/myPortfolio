@@ -15,6 +15,8 @@ export default function useScrollTo() {
         if (!toTop && !el) return;
 
         if (lenis) {
+            // Lenis re-measures the page on a delay; a page that just loaded would cut the jump short
+            lenis.resize();
             lenis.scrollTo(toTop ? 0 : el, { offset: toTop ? 0 : navOffset(), immediate, duration: 1.5, force: true });
             return;
         }

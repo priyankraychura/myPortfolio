@@ -105,7 +105,25 @@ const Gallery = () => {
                 })
             })
 
+            // Tabbing to a card: the browser would scroll the pinned frame sideways by itself and knock the row
+            // out of step with the page. Undo that, and scroll the page to where the card is in view instead.
+            const frame = ref.current
+            const undoSideScroll = () => { frame.scrollLeft = 0 }
+            const handleFocus = (event) => {
+                undoSideScroll()
+                const card = event.target.closest('.g-card')
+                const max = distance()
+                if (!card || !max) return
+                const { start, end } = slide.scrollTrigger
+                const offset = card.offsetLeft - (document.documentElement.clientWidth - card.offsetWidth) / 2
+                window.scrollTo(0, start + gsap.utils.clamp(0, 1, offset / max) * (end - start))
+            }
+            frame.addEventListener('scroll', undoSideScroll)
+            frame.addEventListener('focusin', handleFocus)
+
             return () => {
+                frame.removeEventListener('scroll', undoSideScroll)
+                frame.removeEventListener('focusin', handleFocus)
                 setPinned(false)
                 setProgress(0)
             }
