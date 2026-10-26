@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import PrivacyPolicyTemplate from '../components/PrivacyPolicyTemplate';
 import Button from '../components/Button';
 import { ArrowRight } from '../components/icons';
+import usePageMeta from '../hooks/usePageMeta';
 import { privacyPolicies } from '../utils/privacyPolicies';
 
 const PrivacyPolicy = () => {
@@ -11,11 +12,10 @@ const PrivacyPolicy = () => {
   const currentPolicyWrapper = privacyPolicies.find((item) => item.title.toLowerCase() === appName.toLowerCase());
   const policyName = currentPolicyWrapper?.policy.appName
 
-  useEffect(() => {
-    document.title = policyName
-      ? `${policyName} Privacy Policy | Priyank Raychura`
-      : 'Privacy policy not found | Priyank Raychura'
-  }, [policyName])
+  usePageMeta(
+    policyName ? `${policyName} Privacy Policy | Priyank Raychura` : 'Privacy policy not found | Priyank Raychura',
+    policyName ? `The privacy policy for ${policyName}, an app by Priyank Raychura: what it collects, what it keeps on your device and how to get in touch.` : undefined
+  )
 
   if (!currentPolicyWrapper) {
     return (

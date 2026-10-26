@@ -7,8 +7,6 @@ import ScrollToTop from './components/ScrollToTop'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
-// keeps Firebase Analytics running now that the sign-in UI is gone
-import './config/firebaseConfig'
 
 export default function App() {
   return (

@@ -1,16 +1,17 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import ProjectArchive from '../components/ProjectArchive'
 import { SplitWords } from '../components/SplitText'
 import useReveal from '../hooks/useReveal'
+import usePageMeta from '../hooks/usePageMeta'
 import { works } from '../utils/works'
 
 const AllProjects = () => {
   const container = useRef(null)
   useReveal(container)
-
-  useEffect(() => {
-    document.title = 'All projects | Priyank Raychura'
-  }, [])
+  usePageMeta(
+    'All projects | Priyank Raychura',
+    `All ${works.length} web projects by Priyank Raychura: landing pages, portfolios, JavaScript tools and full-stack apps built with React, Django, JavaScript, Bootstrap and CSS.`
+  )
 
   return (
     <main id="main" ref={container}>

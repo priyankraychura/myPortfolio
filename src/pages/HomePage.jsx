@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import Hero from '../components/Hero'
 import Marquee from '../components/Marquee'
 import Apps from '../components/Apps'
@@ -9,6 +9,7 @@ import Contact from '../components/Contact'
 import useReveal from '../hooks/useReveal'
 import useSectionAmbient from '../hooks/useSectionAmbient'
 import useHashScroll from '../hooks/useHashScroll'
+import usePageMeta from '../hooks/usePageMeta'
 
 const HomePage = () => {
     const container = useRef(null);
@@ -16,10 +17,7 @@ const HomePage = () => {
     useReveal(container);
     useSectionAmbient(container);
     useHashScroll();
-
-    useEffect(() => {
-        document.title = 'Priyank Raychura | Full-stack developer'
-    }, [])
+    usePageMeta('Priyank Raychura | Full-stack developer');
 
     return (
         <main id="main" ref={container}>

@@ -1,9 +1,12 @@
-import axios from 'axios';
-import React, { useState } from 'react'
-import Lottie from 'lottie-react';
-import successAnimation from '../assets/success-animation.json'
+import React, { Suspense, lazy, useState } from 'react'
 import Button from './Button'
 import { ArrowRight, Send } from './icons'
+
+// axios and the Lottie success animation download on the first send, not with the page.
+// The animation is decorative: if it can't download, its space just stays empty.
+const AnimationSpace = () => <div style={{ width: 150, height: 125 }}></div>;
+const loadSuccessAnimation = () => import('./SuccessAnimation');
+const SuccessAnimation = lazy(() => loadSuccessAnimation().catch(() => ({ default: AnimationSpace })));
 
 const emptyForm = { name: '', email: '', message: '' };
 
@@ -20,6 +23,7 @@ const ContactForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setStatus('submitting');
+        loadSuccessAnimation().catch(() => {});
 
         const apiUrl = import.meta.env.VITE_API_URL;
         const apiKey = import.meta.env.VITE_API_SECRET_KEY;
@@ -30,7 +34,8 @@ const ContactForm = () => {
             }
         };
 
-        axios.post(`${apiUrl}/contact`, formData, config)
+        import('axios')
+            .then(({ default: axios }) => axios.post(`${apiUrl}/contact`, formData, config))
             .then(() => {
                 setStatus('success');
                 setFormData(emptyForm);
@@ -45,7 +50,9 @@ const ContactForm = () => {
         return (
             <div className="card form-card" data-reveal>
                 <div className="form-done" role="status">
-                    <Lottie animationData={successAnimation} loop={false} style={{ width: 150, height: 125 }} />
+                    <Suspense fallback={<AnimationSpace />}>
+                        <SuccessAnimation />
+                    </Suspense>
                     <h3>Message sent</h3>
                     <p>Thanks for reaching out. I&apos;ll get back to you by email as soon as I can.</p>
                     <Button label="Send another message" onClick={() => setStatus('idle')} iconAfter={<ArrowRight />} />

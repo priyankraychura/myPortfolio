@@ -483,3 +483,14 @@
 	justify-items: start;
 	gap: 24px;
 }
+
+.not-found .page-title,
+.not-found .page-lede,
+.not-found .cta-row {
+	margin-top: 0;
+}
+
+/* keeps the footer below the fold while a page's code downloads */
+.page-loading {
+	min-height: 100vh;
+}
