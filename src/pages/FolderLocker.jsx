@@ -8,6 +8,7 @@ import { SplitWords } from '../components/SplitText'
 import { Ban, Close, Code, Download, Drive, FolderOpen, Key, Lock, Shield } from '../components/icons'
 import useReveal from '../hooks/useReveal'
 import useHashScroll from '../hooks/useHashScroll'
+import usePageMeta from '../hooks/usePageMeta'
 import { CLOAK_RELEASES, CLOAK_REPO } from '../utils/works'
 
 const CI_BUILDS_URL = `${CLOAK_REPO}/actions/workflows/ci.yml?query=is%3Asuccess`
@@ -69,10 +70,10 @@ const FolderLocker = () => {
 
   useReveal(container)
   useHashScroll()
-
-  useEffect(() => {
-    document.title = 'Cloak - Lock & Encrypt Folders | Priyank Raychura'
-  }, [])
+  usePageMeta(
+    'Cloak - Lock & Encrypt Folders | Priyank Raychura',
+    'Cloak locks, encrypts and hides folders on Windows 10 and 11. Free, open source and private, built with Flutter and Rust. No account, no cloud and no telemetry.'
+  )
 
   // the page glows in Cloak's violet
   useEffect(() => {
@@ -85,18 +86,25 @@ const FolderLocker = () => {
     }
   }, [])
 
-  // screenshot viewer: freeze the page, close on Escape
+  // screenshot viewer: freeze the page, keep focus inside, close on Escape, then return focus to the screenshot
   useEffect(() => {
     if (!preview) return
+    const opener = document.activeElement
     lenis?.stop()
     closeRef.current?.focus()
     const handleKey = (event) => {
       if (event.key === 'Escape') setPreview(null)
+      // the close button is the only control, so Tab stays on it
+      if (event.key === 'Tab') {
+        event.preventDefault()
+        closeRef.current?.focus()
+      }
     }
     window.addEventListener('keydown', handleKey)
     return () => {
       lenis?.start()
       window.removeEventListener('keydown', handleKey)
+      opener?.focus?.({ preventScroll: true })
     }
   }, [preview, lenis])
 
@@ -166,7 +174,7 @@ const FolderLocker = () => {
               {screenshots.map(({ src, label }) => (
                 <button key={src} type="button" className="shot" onClick={() => setPreview({ src, label })} data-reveal>
                   <span className="shot-img">
-                    <img src={src} alt={label} loading="lazy" width="1280" height="800" />
+                    <img src={src} alt="" loading="lazy" width="1280" height="800" />
                   </span>
                   <span>{label}</span>
                 </button>
