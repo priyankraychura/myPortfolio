@@ -20,7 +20,8 @@ const pages = [
 const policies = [
     { label: 'Pushtimarg', to: '/privacy-policy/pushtimarg' },
     { label: 'Cloak', to: '/privacy-policy/cloak' },
-    { label: 'AirKey', to: '/privacy-policy/airkey' }
+    { label: 'AirKey', to: '/privacy-policy/airkey' },
+    { label: 'Pulse', to: '/privacy-policy/pulse' }
 ];
 
 const Footer = () => {

@@ -24,7 +24,7 @@ const PrivacyPolicy = () => {
           <div className="wrap not-found">
             <span className="eyebrow">Privacy policy</span>
             <h1 className="page-title">No privacy policy for &ldquo;{appName}&rdquo;</h1>
-            <p className="page-lede">There are policies for Pushtimarg, Cloak and AirKey. Check the link, or head back to the apps.</p>
+            <p className="page-lede">There are policies for Pushtimarg, Cloak, AirKey and Pulse. Check the link, or head back to the apps.</p>
             <Button label="See the apps" hash="apps" variant="fill" iconAfter={<ArrowRight />} />
           </div>
         </section>
