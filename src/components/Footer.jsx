@@ -25,6 +25,10 @@ const policies = [
     { label: 'Chapter', to: '/privacy-policy/chapter' }
 ];
 
+const terms = [
+    { label: 'Chapter', to: '/terms/chapter' }
+];
+
 const Footer = () => {
     const footerRef = useRef(null)
     const boxRef = useRef(null)
@@ -103,6 +107,15 @@ const Footer = () => {
                         <span>
                             Privacy:{' '}
                             {policies.map(({ label, to }, key) => (
+                                <Fragment key={to}>
+                                    {key > 0 && ' · '}
+                                    <Link to={to}>{label}</Link>
+                                </Fragment>
+                            ))}
+                        </span>
+                        <span>
+                            Terms:{' '}
+                            {terms.map(({ label, to }, key) => (
                                 <Fragment key={to}>
                                     {key > 0 && ' · '}
                                     <Link to={to}>{label}</Link>

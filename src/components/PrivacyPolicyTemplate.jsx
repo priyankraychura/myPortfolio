@@ -19,7 +19,8 @@ const withLinks = (text = '') => {
   return parts;
 };
 
-const PrivacyPolicyTemplate = ({ data }) => {
+// Also renders other legal pages, such as terms of use, through eyebrow and title.
+const PrivacyPolicyTemplate = ({ data, eyebrow = 'Privacy policy', title = 'Privacy Policy' }) => {
   if (!data) return null;
 
   const { appName, lastUpdated, sections, contact } = data;
@@ -31,9 +32,9 @@ const PrivacyPolicyTemplate = ({ data }) => {
 
           {/* Header */}
           <header>
-            <span className="eyebrow">Privacy policy</span>
+            <span className="eyebrow">{eyebrow}</span>
             <h1 className="page-title">
-              Privacy Policy for <span className="text-cobalt">{appName}</span>
+              {title} for <span className="text-cobalt">{appName}</span>
             </h1>
             <p className="policy-date">
               <Calendar />
@@ -143,6 +144,8 @@ PrivacyPolicyTemplate.propTypes = {
       website: PropTypes.string,
     }),
   }).isRequired,
+  eyebrow: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default PrivacyPolicyTemplate;
