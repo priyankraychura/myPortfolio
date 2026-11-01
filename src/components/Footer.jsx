@@ -21,7 +21,8 @@ const policies = [
     { label: 'Pushtimarg', to: '/privacy-policy/pushtimarg' },
     { label: 'Cloak', to: '/privacy-policy/cloak' },
     { label: 'AirKey', to: '/privacy-policy/airkey' },
-    { label: 'Pulse', to: '/privacy-policy/pulse' }
+    { label: 'Pulse', to: '/privacy-policy/pulse' },
+    { label: 'Chapter', to: '/privacy-policy/chapter' }
 ];
 
 const Footer = () => {

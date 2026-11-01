@@ -2,6 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Calendar, Globe, Mail } from './icons';
 
+// Policy text can link out with [label](https://…).
+const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+
+const withLinks = (text = '') => {
+  const parts = [];
+  let last = 0;
+  for (const match of text.matchAll(linkPattern)) {
+    parts.push(text.slice(last, match.index));
+    parts.push(
+      <a key={match.index} href={match[2]} target="_blank" rel="noopener noreferrer" className="inline-link">{match[1]}</a>
+    );
+    last = match.index + match[0].length;
+  }
+  parts.push(text.slice(last));
+  return parts;
+};
+
 const PrivacyPolicyTemplate = ({ data }) => {
   if (!data) return null;
 
@@ -34,13 +51,13 @@ const PrivacyPolicyTemplate = ({ data }) => {
                 </h2>
 
                 {/* Main Description */}
-                {section.description && <p>{section.description}</p>}
+                {section.description && <p>{withLinks(section.description)}</p>}
 
                 {/* Bullet Points */}
                 {section.points && section.points.length > 0 && (
                   <ul className="policy-points">
                     {section.points.map((point, index) => (
-                      <li key={index}>{point}</li>
+                      <li key={index}>{withLinks(point)}</li>
                     ))}
                   </ul>
                 )}
@@ -51,14 +68,14 @@ const PrivacyPolicyTemplate = ({ data }) => {
                     {section.subSections.map((sub, index) => (
                       <div key={index} className="policy-sub">
                         <h3>{sub.title}:</h3>
-                        <p>{sub.content}</p>
+                        <p>{withLinks(sub.content)}</p>
                       </div>
                     ))}
                   </div>
                 )}
 
                 {/* Closing Description */}
-                {section.closingDescription && <p>{section.closingDescription}</p>}
+                {section.closingDescription && <p>{withLinks(section.closingDescription)}</p>}
               </section>
             ))}
 
